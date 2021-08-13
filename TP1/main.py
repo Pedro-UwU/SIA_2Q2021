@@ -17,14 +17,13 @@ if __name__ == '__main__':
     print("ESTADO ACTUAL:")
     board.print_board()
     start = time.perf_counter()
-    path = SokobanSolver.dls_search(board, 80)
+    path = SokobanSolver.bfs_search(board)
     end = time.perf_counter()
     print('RESOLUCION:')
     for step in path:
         step.print_board()
         print('-----------')
 
-    print('Funcion de busqueda: ', search_function.__name__)
     print('Pasos: ', len(path))
     print('Tiempo: ', round((end - start)*100)/100, ' seconds')
 
