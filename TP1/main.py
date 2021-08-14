@@ -15,16 +15,18 @@ if __name__ == '__main__':
     search_function = configuration_parser.get('config', 'SEARCH_FUNCTION')
     board = Board(filePath)
     print("ESTADO ACTUAL:")
-    board.print_board()
+    print(board)
     start = time.perf_counter()
-    path = SokobanSolver.bfs_search(board)
+    path = SokobanSolver.dls_search(board, 1500)
     end = time.perf_counter()
     print('RESOLUCION:')
     for step in path:
-        step.print_board()
+        print(step)
         print('-----------')
 
     print('Pasos: ', len(path))
     print('Tiempo: ', round((end - start)*100)/100, ' seconds')
+
+    input('\n\nPresiona ENTER para salir')
 
 # TODO

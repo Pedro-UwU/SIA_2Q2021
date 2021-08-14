@@ -20,12 +20,13 @@ class SokobanSolver:
             states = current_state.get_possible_states()
             for s in states:
                 if s not in explored:
+                    explored.add(s)
                     if SokobanSolver.__check_dead_lock(s):
                         continue
                     tree.add_child(current_state, s)
                     fr.append((s, depth + 1))
                     # lo agrego a explored asi si llego al mismo estado desde otro, no se agrega dos veces a fr
-                    explored.add(s)
+
         print('NO HAY SOLUCION')
         return []
 
@@ -44,9 +45,11 @@ class SokobanSolver:
             states = current_state.get_possible_states()
             for s in states:
                 if s not in explored:
+                    explored.add(s)
+                    if SokobanSolver.__check_dead_lock(s):
+                        continue
                     tree.add_child(current_state, s)
                     fr.append((s, depth + 1))
-                    explored.add(s)
 
         print('NO HAY SOLUCION')
         return []
@@ -59,7 +62,6 @@ class SokobanSolver:
         tree.set_root(initial_state)
 
         fr.append((initial_state, 1))
-        explored.add(initial_state)
         while len(fr) > 0:
             current_state, depth = fr.pop()
             if current_state.is_goal():
@@ -67,14 +69,33 @@ class SokobanSolver:
             states = current_state.get_possible_states()
             for s in states:
                 if depth < depth_limit:
-                    if s not in explored or (s in explored and tree.get_depth(s) > (depth + 1)):
-                        tree.add_child(current_state, s)
-                        tree.update_depth(s, depth + 1)
-                        fr.append((s, depth + 1))
-                        explored.add(s)
+                    if s in explored and (depth + 1) > tree.get_depth(s):
+                        continue
+                    explored.add(s)
+                    if SokobanSolver.__check_dead_lock(s):
+                        continue
+                    tree.add_child(current_state, s)
+                    tree.update_depth(s, depth + 1)
+                    fr.append((s, depth + 1))
 
         print('NO HAY SOLUCION')
         return []
+
+
+    # True si se puede mover o hay un goal en el camino
+    @staticmethod
+    def __check_box_movement(board, box_coords, direction, look_up_direction):
+        tile = board.get_static(box_coords[0], box_coords[1])
+        neighbor = board.get_static(box_coords[0] + look_up_direction[0], box_coords[1] + look_up_direction[1])
+        if tile == '#':
+            return False
+        if tile == '.':
+            return True
+        if neighbor == '#':
+            new_coords = (box_coords[0] + direction[0], box_coords[1] + direction[1])
+            return SokobanSolver.__check_box_movement(board, new_coords, direction, look_up_direction)
+        return True
+
 
     @staticmethod
     def __check_dead_lock(board):
@@ -133,19 +154,31 @@ class SokobanSolver:
 
             # 1)
             if static_neighbors[2][1] == '#' and static_neighbors[1][2] == '#':
-                #print(static_neighbors, 'BR', coord)
                 return True
             if static_neighbors[1][2] == '#' and static_neighbors[0][1] == '#':
-                #print(static_neighbors, 'TR', coord)
                 return True
             if static_neighbors[0][1] == '#' and static_neighbors[1][0] == '#':
-                #print(static_neighbors, 'TL', coord)
                 return True
             if static_neighbors[1][0] == '#' and static_neighbors[2][1] == '#':
-                #print(static_neighbors, 'BL', coord)
                 return True
 
-            
+            # 2)
+            if (static_neighbors[0][0] == '#' or dynamic_neighbors[0][0] == '$') and (static_neighbors[0][1] == '#' or dynamic_neighbors[0][1] == '$') and (static_neighbors[1][0] == '#' or dynamic_neighbors[1][0] == '$'):
+                return True
+            if (static_neighbors[0][1] == '#' or dynamic_neighbors[0][1] == '$') and (static_neighbors[0][2] == '#' or dynamic_neighbors[0][2] == '$') and (static_neighbors[1][2] == '#' or dynamic_neighbors[1][2] == '$'):
+                return True
+            if (static_neighbors[1][2] == '#' or dynamic_neighbors[1][2] == '$') and (static_neighbors[2][2] == '#' or dynamic_neighbors[2][2] == '$') and (static_neighbors[2][1] == '#' or dynamic_neighbors[2][1] == '$'):
+                return True
+            if (static_neighbors[2][1] == '#' or dynamic_neighbors[2][1] == '$') and (static_neighbors[2][0] == '#' or dynamic_neighbors[2][0] == '$') and (static_neighbors[1][0] == '#' or dynamic_neighbors[1][0] == '$'):
+                return True
 
-
+            # 3)
+            if static_neighbors[1][0] == '#':
+                return not (SokobanSolver.__check_box_movement(board, coord, (-1, 0), (0, -1)) or SokobanSolver.__check_box_movement(board, coord, (1, 0), (0,-1)))
+            if static_neighbors[0][1] == '#':
+                return not (SokobanSolver.__check_box_movement(board, coord, (0, -1), (-1, 0)) or SokobanSolver.__check_box_movement(board, coord, (0, 1), (-1, 0)))
+            if static_neighbors[1][2] == '#':
+                return not (SokobanSolver.__check_box_movement(board, coord, (-1, 0), (0, 1)) or SokobanSolver.__check_box_movement(board, coord, (1, 0), (0, 1)))
+            if static_neighbors[2][1] == '#':
+                return not (SokobanSolver.__check_box_movement(board, coord, (0, -1), (1, 0)) or SokobanSolver.__check_box_movement(board, coord, (0, 1), (1, 0)))
         return False
