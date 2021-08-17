@@ -53,7 +53,7 @@ class Board:
             output += '\033[0m'  # Para que los prints sigan siendo blancos
             print(output)
 
-    def __get_player_position(self):
+    def get_player_position(self):
         y = 0
         for row in self.dynamic_board:
             x = 0
@@ -77,7 +77,7 @@ class Board:
         return new_board
 
     def get_possible_states(self):
-        (y, x) = self.__get_player_position()
+        (y, x) = self.get_player_position()
         if y == -1 or x == -1:
             return []
 
@@ -138,6 +138,29 @@ class Board:
             char = '#'
         return char
 
+    def get_boxes_positions(self):
+        positions = []
+        y = 0
+        for row in self.dynamic_board:
+            x = 0
+            for char in row:
+                if char == BOX:
+                    positions.append((y, x))
+                x += 1
+            y += 1
+        return positions
+
+    def get_goals_positions(self):
+        positions = []
+        y = 0
+        for row in self.static_board:
+            x = 0
+            for char in row:
+                if char == GOAL:
+                    positions.append((y, x))
+                x += 1
+            y += 1
+        return positions
 
     def __hash__(self):
         return hash(self.__str__())
