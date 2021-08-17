@@ -124,6 +124,21 @@ class Board:
             return True
         return False
 
+    def get_dynamic(self, i, j):
+        try:
+            char = self.dynamic_board[i][j]
+        except:
+            char = ' '
+        return char
+
+    def get_static(self, i, j):
+        try:
+            char = self.static_board[i][j]
+        except:
+            char = '#'
+        return char
+
+
     def __hash__(self):
         return hash(self.__str__())
         # hash_code = 0

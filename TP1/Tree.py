@@ -3,10 +3,12 @@ class Tree:
         self.root = None
         self.children = {}
         self.parents = {}
+        self.depths = {}
 
     def set_root(self, root):
         self.root = root
         self.children[root] = []
+        self.depths[root] = 1
 
     def add_child(self, parent, child):
         # if parent not in self.children:
@@ -15,8 +17,9 @@ class Tree:
         #     if len(self.children[parent]) > 4:
         #         raise Exception('ERROR')
         #     self.children[parent].append(child)
-        if child not in self.parents:
-            self.parents[child] = parent
+        self.parents[child] = parent
+        self.depths[child] = self.depths[parent]+1
+
 
     def get_path(self, goal):
         path = []
@@ -26,3 +29,12 @@ class Tree:
         path.append(goal)
         path.reverse()
         return path
+
+    def get_depth(self, node):
+        if node in self.depths:
+            return self.depths[node]
+        return -1
+
+    def update_depth(self, node, new_depth):
+        if node in self.depths:
+            self.depths[node] = new_depth
