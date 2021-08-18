@@ -127,18 +127,17 @@ if __name__ == '__main__':
     board = Board(filePath)
     print("ESTADO ACTUAL:")
     print(board)
-    print('Heursitica: ', heu_minmatching(board))
 
-    # start = time.perf_counter()
-    # path = SokobanSolver.dls_search(board, 1500)
-    # end = time.perf_counter()
-    # print('RESOLUCION:')
-    # for step in path:
-    #     print(step)
-    #     print('-----------')
-    #
-    # print('Pasos: ', len(path))
-    # print('Tiempo: ', round((end - start)*100)/100, ' seconds')
+    start = time.perf_counter()
+    path = SokobanSolver.iddfs_search(board)
+    end = time.perf_counter()
+    print('RESOLUCION:')
+    for step in path:
+        print(step)
+        print('-----------')
+
+    print('Pasos: ', len(path))
+    print('Tiempo: ', round((end - start)*100)/100, ' seconds')
 
     input('\n\nPresiona ENTER para salir')
 

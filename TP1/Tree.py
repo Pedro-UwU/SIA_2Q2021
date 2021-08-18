@@ -8,18 +8,17 @@ class Tree:
     def set_root(self, root):
         self.root = root
         self.children[root] = []
-        self.depths[root] = 1
+        self.depths[root] = 0
 
     def add_child(self, parent, child):
-        # if parent not in self.children:
-        #     self.children[parent] = []
-        # if child not in self.children[parent]:
-        #     if len(self.children[parent]) > 4:
-        #         raise Exception('ERROR')
-        #     self.children[parent].append(child)
+        if parent not in self.children:
+            self.children[parent] = []
+        if child not in self.children[parent]:
+            if len(self.children[parent]) > 4:
+                raise Exception('ERROR')
+            self.children[parent].append(child)
         self.parents[child] = parent
-        self.depths[child] = self.depths[parent]+1
-
+        self.depths[child] = self.depths[parent] + 1
 
     def get_path(self, goal):
         path = []
