@@ -128,7 +128,7 @@ if __name__ == '__main__':
     print(board)
 
     start = time.perf_counter()
-    path = SokobanSolver.greedy_search(board, heu_minmatching)
+    path = SokobanSolver.a_star(board, heu_minmatching)
     end = time.perf_counter()
     print('RESOLUCION:')
     for step in path:

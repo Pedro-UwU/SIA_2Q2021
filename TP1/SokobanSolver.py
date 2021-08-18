@@ -240,5 +240,32 @@ class SokobanSolver:
                     fr.append((s, depth + 1))
                     h = heuristic(s)
                     # lo agrego a explored asi si llego al mismo estado desde otro, no se agrega dos veces a fr
-            fr.sort(key=lambda x: heuristic(x[0]))
+            fr.sort(key=lambda x: heuristic(x[1]))
+        return []
+
+    @staticmethod
+    def a_star(board, heuristic):
+        fr = []
+        explored = set()
+        tree = Tree()
+        tree.set_root(board)
+
+        fr.append((board, 1, 0, heuristic(board)))
+        explored.add(board)
+        while len(fr) > 0:
+            current_state, depth, f_n, h_n = fr.pop(0)
+            if current_state.is_goal():
+                return tree.get_path(current_state)
+            states = current_state.get_possible_states()
+            for s in states:
+                if s not in explored:
+                    explored.add(s)
+                    if SokobanSolver.check_dead_lock(s):
+                        continue
+                    tree.add_child(current_state, s)
+                    h = heuristic(s)
+                    f = depth+1 + h
+                    fr.append((s, depth + 1, h, f))
+                    # lo agrego a explored asi si llego al mismo estado desde otro, no se agrega dos veces a fr
+            fr.sort(key=lambda x: f)
         return []
