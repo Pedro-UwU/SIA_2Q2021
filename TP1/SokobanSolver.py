@@ -21,7 +21,7 @@ class SokobanSolver:
             for s in states:
                 if s not in explored:
                     explored.add(s)
-                    if SokobanSolver.__check_dead_lock(s):
+                    if SokobanSolver.check_dead_lock(s):
                         continue
                     tree.add_child(current_state, s)
                     fr.append((s, depth + 1))
@@ -46,7 +46,7 @@ class SokobanSolver:
             for s in states:
                 if s not in explored:
                     explored.add(s)
-                    if SokobanSolver.__check_dead_lock(s):
+                    if SokobanSolver.check_dead_lock(s):
                         continue
                     tree.add_child(current_state, s)
                     fr.append((s, depth + 1))
@@ -72,7 +72,7 @@ class SokobanSolver:
                     if s in explored and (depth + 1) > tree.get_depth(s):
                         continue
                     explored.add(s)
-                    if SokobanSolver.__check_dead_lock(s):
+                    if SokobanSolver.check_dead_lock(s):
                         continue
                     tree.add_child(current_state, s)
                     tree.update_depth(s, depth + 1)
@@ -98,7 +98,7 @@ class SokobanSolver:
 
 
     @staticmethod
-    def __check_dead_lock(board):
+    def check_dead_lock(board):
         # get the position of all boxes
         y, x = 0, 0
         coords = []
