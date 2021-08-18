@@ -1,4 +1,6 @@
 import math
+import time
+
 from Tree2 import *
 from collections import deque
 
@@ -82,15 +84,47 @@ class SokobanSolver:
         return [], len(explored), len(fr)
 
     @staticmethod
-    def iddfs_search(initial_state):
-        depth = 0
-        result = []
-        explored = 0
-        frontier = 0
-        while len(result) == 0:
-            result, explored, frontier = SokobanSolver.__dls_search(initial_state, depth)
-            depth += 1
-        return result, explored, frontier
+    def iddfs_search(board):
+        # return result, explored, frontier
+        lim = 0
+        tree = Tree2()
+        tree.set_root(board)
+        root = tree.root
+        explored = set()
+        fr = deque()
+        next_iter = deque()
+        depths = {root.value: root.depth}
+
+        explored.add(root.value)
+        fr.append(root)
+        while len(fr) > 0 or len(next_iter) > 0:
+            if len(fr) == 0:
+                fr = next_iter
+                next_iter = deque()
+                lim += 1
+            current = fr.pop()
+
+            if current.value.is_goal():
+                path = current.get_path()
+                path.reverse()
+                return path, len(explored), len(fr) + len(next_iter)
+
+            states = current.value.get_possible_states()
+            for s in states:
+                new_node = Node(s, current.depth + 1, current)
+                if s in explored:
+                    if depths[s] <= new_node.depth:
+                        continue
+                depths[s] = new_node.depth
+                explored.add(s)
+                if SokobanSolver.check_dead_lock(s):
+                    continue
+
+                if new_node.depth > lim:
+                    next_iter.append(new_node)
+                else:
+                    fr.append(new_node)
+        return [], len(explored), len(fr) + len(next_iter)
 
     # True si se puede mover o hay un goal en el camino
     @staticmethod
@@ -223,9 +257,9 @@ class SokobanSolver:
         tree = Tree()
         tree.set_root(board)
 
-        fr.append((board, 1))
+        fr.append((board, 1, heuristic(board)))
         while len(fr) > 0:
-            current_state, depth = fr.pop(0)
+            current_state, depth, current_h = fr.pop(0)
             if current_state.is_goal():
                 return tree.get_path(current_state), len(explored), len(fr)
             states = current_state.get_possible_states()
@@ -235,10 +269,10 @@ class SokobanSolver:
                     if SokobanSolver.check_dead_lock(s):
                         continue
                     tree.add_child(current_state, s)
-                    fr.append((s, depth + 1))
                     h = heuristic(s)
+                    fr.append((s, depth + 1, h))
                     # lo agrego a explored asi si llego al mismo estado desde otro, no se agrega dos veces a fr
-            fr.sort(key=lambda x: heuristic(x[0]))
+            fr.sort(key=lambda x: x[2])
         return [], len(explored), len(fr)
 
     @staticmethod
@@ -278,17 +312,20 @@ class SokobanSolver:
         explored = set()
         fr = deque()
         next_iter = deque()
-        depths = {root: root.depth}
+        depths = {root.value: root.depth}
 
-        explored.add(root)
+        explored.add(root.value)
         fr.append(root)
         min_f = math.inf
+        max_depth = 0
         while len(fr) > 0 or len(next_iter) > 0:
             if len(fr) == 0:
                 fr = next_iter
                 next_iter = deque()
                 lim = min_f
                 min_f = math.inf
+                print('Nivel: ', max_depth)
+                print('\tNodos explorados: ', len(explored))
             current = fr.pop()
             h = heuristic(current.value)
             f = h + current.depth
@@ -304,13 +341,18 @@ class SokobanSolver:
             states = current.value.get_possible_states()
             for s in states:
                 new_node = Node(s, current.depth + 1, current)
-                if new_node in explored:
-                    if depths[new_node] >= new_node.depth:
+                if s in explored:
+                    if depths[s] < new_node.depth:
                         continue
-                    depths[new_node] = new_node.depth
-                explored.add(new_node)
+                depths[s] = new_node.depth
+                explored.add(s)
                 h = heuristic(new_node.value)
                 f = h + new_node.depth
+                if new_node.depth > max_depth:
+                    max_depth = new_node.depth
+
+                if SokobanSolver.check_dead_lock(s):
+                    continue
 
                 if f > lim:
                     next_iter.append(new_node)
@@ -318,3 +360,4 @@ class SokobanSolver:
                         min_f = f
                 else:
                     fr.append(new_node)
+        return [], len(explored), len(fr) + len(next_iter)

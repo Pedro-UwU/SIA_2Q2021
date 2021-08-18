@@ -159,6 +159,7 @@ if __name__ == '__main__':
             exit(-1)
 
     start = time.perf_counter()
+    print('Searching for a solution to ', filePath, '...')
     if not informed:
         path, explored_nodes, frontier = search(board)
     else:
@@ -168,7 +169,7 @@ if __name__ == '__main__':
     output = open('./' + output_file_name, 'w+', encoding='utf-8')
     output.write('Función: ' + search_function + '\n')
     output.write(('Resultado de la busqueda: ' + ('ENCONTRADO' if len(path) > 0 else 'NO ENCONTRADO') + '\n'))
-    output.write(('Nodos Explandidos: ' + str(explored_nodes) + '\n'))
+    output.write(('Nodos Expandidos: ' + str(explored_nodes) + '\n'))
     output.write(('Nodos en la frontera: ' + str(frontier) + '\n'))
     output.write(('Profundidad de solucion: ' + str(len(path) - 1) + '\n'))
     output.write(('Tiempo de procesamiento: ' + str(round((end - start) * 1000) / 1000) + ' segundos' + '\n'))
