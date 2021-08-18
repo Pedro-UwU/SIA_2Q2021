@@ -7,7 +7,8 @@ BOX_AND_GOAL = '*'
 
 
 class Board:
-    def __init__(self, file_name = None):
+    def __init__(self, file_name=None):
+        self.heuristic = 0
         self.static_board = []
         self.dynamic_board = []
         if file_name is None:
@@ -52,6 +53,12 @@ class Board:
                     output += st_ch
             output += '\033[0m'  # Para que los prints sigan siendo blancos
             print(output)
+
+    def set_heuristic(self, h):
+        self.heuristic = h
+
+    def get_heuristic(self):
+        return self.heuristic
 
     def get_player_position(self):
         y = 0

@@ -10,7 +10,6 @@ from Tree import Tree
 
 
 def heu_distance(board):
-    player_position = board.get_player_position()
     boxes_positions = board.get_boxes_positions()
     goals_positions = board.get_goals_positions()
     if SokobanSolver.check_dead_lock(board):
@@ -48,7 +47,7 @@ def calculate_steps(box, goal, board):
     while len(fr) > 0:
         current = fr.popleft()
         if current[0] == goal[0] and current[1] == goal[1]:
-            return len(tree.get_path(current)) - 1 # -1 porque estamos tomando el estado inicial como paso
+            return len(tree.get_path(current)) - 1  # -1 porque estamos tomando el estado inicial como paso
         neighbors = get_box_neighbors(current, board)
         for n in neighbors:
             if n in explored:
@@ -80,6 +79,43 @@ def heu_steps_distance(board):
     return total_distance
 
 
+def min_distance(boxes, goals, index, used, weights):
+    min_dist = math.inf
+    b = boxes[index]
+    min_g = None
+    for g in goals:
+        if g in used:
+            continue
+        used.add(g)
+        dist = weights[b][g]
+        if index < (len(boxes) - 1):
+            dist += min_distance(boxes, goals, index+1, used, weights)
+        used.remove(g)
+        if dist < min_dist:
+            min_dist = dist
+
+
+    return min_dist
+
+
+def heu_minmatching(board):
+    boxes = board.get_boxes_positions()
+    goals = board.get_goals_positions()
+    if SokobanSolver.check_dead_lock(board):
+        return math.inf
+    weights = {}
+    for box in boxes:
+        weights[box] = {}
+        for goal in goals:
+            steps = calculate_steps(box, goal, board)
+            weights[box][goal] = steps
+    print(weights)
+    dist = min_distance(boxes, goals, 0, set(), weights)
+    return dist
+
+
+
+
 if __name__ == '__main__':
     dirname = os.path.dirname(__file__)
     configPath = os.path.join(dirname, 'config.conf')
@@ -91,7 +127,7 @@ if __name__ == '__main__':
     board = Board(filePath)
     print("ESTADO ACTUAL:")
     print(board)
-    print('Heursitica: ', heu_steps_distance(board))
+    print('Heursitica: ', heu_minmatching(board))
 
     # start = time.perf_counter()
     # path = SokobanSolver.dls_search(board, 1500)
