@@ -124,6 +124,9 @@ if __name__ == '__main__':
     deadlock_flag = configuration_parser.getboolean('config', 'CHECK_DEADLOCKS_WITH_UNINFORMED')
     output_file_name = configuration_parser.get('config', 'OUTPUT_FILE_NAME')
     heuristic_name = configuration_parser.get('config', 'HEURISTIC')
+    optimized_uninformed = configuration_parser.getboolean('config', 'CHECK_DEADLOCKS_WITH_UNINFORMED')
+    print_solution = configuration_parser.getboolean('config', 'PRINT_ON_TERMINAL')
+    print_with_colors = configuration_parser.getboolean('config', 'PRINT_WITH_COLORS')
 
     search = None
     informed = False
@@ -161,7 +164,7 @@ if __name__ == '__main__':
     start = time.perf_counter()
     print('Searching for a solution to ', filePath, '...')
     if not informed:
-        path, explored_nodes, frontier = search(board)
+        path, explored_nodes, frontier = search(board, optimized_uninformed)
     else:
         path, explored_nodes, frontier = search(board, heuristic)
     end = time.perf_counter()
@@ -174,11 +177,18 @@ if __name__ == '__main__':
     output.write(('Profundidad de solucion: ' + str(len(path) - 1) + '\n'))
     output.write(('Tiempo de procesamiento: ' + str(round((end - start) * 1000) / 1000) + ' segundos' + '\n'))
     if informed:
-        output.write(str('Heuristica: ' + heuristic_name))
+        output.write(str('Heuristica: ' + heuristic_name + '\n'))
+    else:
+        output.write(str('Check de deadlocks: ' + str(optimized_uninformed) + '\n'))
     output.write('\nSOLUCION:\n')
     for step in path:
         output.write(step.__str__())
         output.write('-------------------------------\n')
     output.close()
+
+    if print_solution:
+        for s in path:
+            s.print_board(print_with_colors)
+            print('-------------------------------\n')
 
     print(search.__name__)

@@ -35,7 +35,10 @@ class Board:
             line += 1
         board_file.close()
 
-    def print_board(self):
+    def print_board(self, colors):
+        if not colors:
+            print(self)
+            return
         for y in range(len(self.static_board)):
             output = ''
             for x in range(len(self.static_board[y])):
