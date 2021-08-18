@@ -216,3 +216,29 @@ class SokobanSolver:
                                                                                                              (0, 1),
                                                                                                              (1, 0)))
         return False
+
+    @staticmethod
+    def greedy_search(board, heuristic):
+        fr = []
+        explored = set()
+        tree = Tree()
+        tree.set_root(board)
+
+        fr.append((board, 1))
+        explored.add(board)
+        while len(fr) > 0:
+            current_state, depth = fr.pop(0)
+            if current_state.is_goal():
+                return tree.get_path(current_state)
+            states = current_state.get_possible_states()
+            for s in states:
+                if s not in explored:
+                    explored.add(s)
+                    if SokobanSolver.check_dead_lock(s):
+                        continue
+                    tree.add_child(current_state, s)
+                    fr.append((s, depth + 1))
+                    h = heuristic(s)
+                    # lo agrego a explored asi si llego al mismo estado desde otro, no se agrega dos veces a fr
+            fr.sort(key=lambda x: heuristic(x[0]))
+        return []

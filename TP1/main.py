@@ -109,7 +109,6 @@ def heu_minmatching(board):
         for goal in goals:
             steps = calculate_steps(box, goal, board)
             weights[box][goal] = steps
-    print(weights)
     dist = min_distance(boxes, goals, 0, set(), weights)
     return dist
 
@@ -129,7 +128,7 @@ if __name__ == '__main__':
     print(board)
 
     start = time.perf_counter()
-    path = SokobanSolver.iddfs_search(board)
+    path = SokobanSolver.greedy_search(board, heu_minmatching)
     end = time.perf_counter()
     print('RESOLUCION:')
     for step in path:
