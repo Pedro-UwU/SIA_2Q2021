@@ -89,11 +89,10 @@ def min_distance(boxes, goals, index, used, weights):
         used.add(g)
         dist = weights[b][g]
         if index < (len(boxes) - 1):
-            dist += min_distance(boxes, goals, index+1, used, weights)
+            dist += min_distance(boxes, goals, index + 1, used, weights)
         used.remove(g)
         if dist < min_dist:
             min_dist = dist
-
 
     return min_dist
 
@@ -113,8 +112,6 @@ def heu_minmatching(board):
     return dist
 
 
-
-
 if __name__ == '__main__':
     dirname = os.path.dirname(__file__)
     configPath = os.path.join(dirname, 'config.conf')
@@ -124,20 +121,63 @@ if __name__ == '__main__':
     filePath = os.path.join(dirname, configuration_parser.get('config', 'BOARD_FILE_PATH'))
     search_function = configuration_parser.get('config', 'SEARCH_FUNCTION')
     board = Board(filePath)
-    print("ESTADO ACTUAL:")
-    print(board)
+    deadlock_flag = configuration_parser.getboolean('config', 'CHECK_DEADLOCKS_WITH_UNINFORMED')
+    output_file_name = configuration_parser.get('config', 'OUTPUT_FILE_NAME')
+    heuristic_name = configuration_parser.get('config', 'HEURISTIC')
+
+    search = None
+    informed = False
+    if search_function == 'BFS':
+        search = SokobanSolver.bfs_search
+    elif search_function == 'DFS':
+        search = SokobanSolver.dfs_search
+    elif search_function == 'IDDFS':
+        search = SokobanSolver.iddfs_search
+    elif search_function == 'Greedy':
+        search = SokobanSolver.greedy_search
+        informed = True
+    elif search_function == 'A Star':
+        search = SokobanSolver.a_star
+        informed = True
+    elif search_function == 'IDA Star':
+        search = SokobanSolver.ida_star
+        informed = True
+    else:
+        print("INVALID SEARCH FUNCTION")
+        exit(-1)
+
+    heuristic = None
+    if informed:
+        if heuristic_name == 'Distance':
+            heuristic = heu_distance
+        elif heuristic_name == 'Steps':
+            heuristic = heu_steps_distance
+        elif heuristic_name == 'Minmatching':
+            heuristic = heu_minmatching
+        else:
+            print('INVALID HEURISTIC FUNCTION')
+            exit(-1)
 
     start = time.perf_counter()
-    path = SokobanSolver.a_star(board, heu_minmatching)
+    if not informed:
+        path, explored_nodes, frontier = search(board)
+    else:
+        path, explored_nodes, frontier = search(board, heuristic)
     end = time.perf_counter()
-    print('RESOLUCION:')
+
+    output = open('./' + output_file_name, 'w+', encoding='utf-8')
+    output.write('Función: ' + search_function + '\n')
+    output.write(('Resultado de la busqueda: ' + ('ENCONTRADO' if len(path) > 0 else 'NO ENCONTRADO') + '\n'))
+    output.write(('Nodos Explandidos: ' + str(explored_nodes) + '\n'))
+    output.write(('Nodos en la frontera: ' + str(frontier) + '\n'))
+    output.write(('Profundidad de solucion: ' + str(len(path) - 1) + '\n'))
+    output.write(('Tiempo de procesamiento: ' + str(round((end - start) * 1000) / 1000) + ' segundos' + '\n'))
+    if informed:
+        output.write(str('Heuristica: ' + heuristic_name))
+    output.write('\nSOLUCION:\n')
     for step in path:
-        print(step)
-        print('-----------')
+        output.write(step.__str__())
+        output.write('-------------------------------\n')
+    output.close()
 
-    print('Pasos: ', len(path))
-    print('Tiempo: ', round((end - start)*100)/100, ' seconds')
-
-    input('\n\nPresiona ENTER para salir')
-
-# TODO
+    print(search.__name__)
