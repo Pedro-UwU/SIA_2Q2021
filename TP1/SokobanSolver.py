@@ -1,4 +1,5 @@
 import math
+from Tree2 import *
 from collections import deque
 
 from Tree import Tree
@@ -270,44 +271,50 @@ class SokobanSolver:
     @staticmethod
     def ida_star(board, heuristic):
         lim = heuristic(board)
-        result = []
-        explored = 0
-        frontier = 0
-        while len(result) == 0:
-            result, new_limit, explored, frontier = SokobanSolver.__ida_search(board, heuristic, lim)
-            lim = new_limit
-        return result, explored, frontier
-
-    @staticmethod
-    def __ida_search(board, heuristic, limit):
-        fr = deque()
-        tree = Tree()
+        # return result, explored, frontier
+        tree = Tree2()
         tree.set_root(board)
+        root = tree.root
         explored = set()
-        explored.add(board)
+        fr = deque()
+        next_iter = deque()
+        depths = {root: root.depth}
 
-        fr.append((board, 0))
+        explored.add(root)
+        fr.append(root)
         min_f = math.inf
-        while len(fr) > 0:
-            current_state, depth = fr.pop()
-            if current_state.is_goal():
-                return tree.get_path(current_state), min_f, len(explored), len(fr)
-            states = current_state.get_possible_states()
-            for s in states:
-                if s in explored:
-                    prev_depth = tree.get_depth(s)
-                    if prev_depth < (depth + 1):
-                        continue
-                h = heuristic(s)
-                g = depth + 1
-                f = h + g
-                if f <= limit:
-                    explored.add(s)
-                    if SokobanSolver.check_dead_lock(s):
-                        continue
-                    tree.add_child(current_state, s)
+        while len(fr) > 0 or len(next_iter) > 0:
+            if len(fr) == 0:
+                fr = next_iter
+                next_iter = deque()
+                lim = min_f
+                min_f = math.inf
+            current = fr.pop()
+            h = heuristic(current.value)
+            f = h + current.depth
 
-                    fr.append((s, depth + 1))
-                elif limit < f < min_f:
-                    min_f = f
-        return [], min_f, len(explored), len(fr)
+            if f > lim:
+                next_iter.append(current)
+
+            if current.value.is_goal():
+                path = current.get_path()
+                path.reverse()
+                return path, len(explored), len(fr) + len(next_iter)
+
+            states = current.value.get_possible_states()
+            for s in states:
+                new_node = Node(s, current.depth + 1, current)
+                if new_node in explored:
+                    if depths[new_node] >= new_node.depth:
+                        continue
+                    depths[new_node] = new_node.depth
+                explored.add(new_node)
+                h = heuristic(new_node.value)
+                f = h + new_node.depth
+
+                if f > lim:
+                    next_iter.append(new_node)
+                    if f < min_f:
+                        min_f = f
+                else:
+                    fr.append(new_node)
