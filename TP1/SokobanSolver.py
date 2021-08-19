@@ -302,6 +302,9 @@ class SokobanSolver:
                 path = current.get_path()
                 path.reverse()
                 return path, len(explored), len(fr) + len(next_iter)
+            if current_f > lim:
+                next_iter.append((current, current_f))
+                continue
             states = current.value.get_possible_states()
             for s in states:
                 new_node = Node(s, current.depth + 1, current)

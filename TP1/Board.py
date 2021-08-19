@@ -4,6 +4,7 @@ BOX = '$'
 GOAL = '.'
 SPACE = ' '
 BOX_AND_GOAL = '*'
+PLAYER_AND_GOAL = '+'
 
 
 class Board:
@@ -31,6 +32,9 @@ class Board:
                 elif ch == BOX_AND_GOAL:
                     self.static_board[line].append(GOAL)
                     self.dynamic_board[line].append(BOX)
+                elif ch == PLAYER_AND_GOAL:
+                    self.static_board[line].append(GOAL)
+                    self.dynamic_board[line].append(PLAYER)
                 char += 1
             line += 1
         board_file.close()
@@ -202,6 +206,8 @@ class Board:
                 st_ch = self.static_board[y][x]
                 if st_ch == GOAL and dy_ch == BOX:
                     output += BOX_AND_GOAL
+                elif st_ch == GOAL and dy_ch == PLAYER:
+                    output += PLAYER_AND_GOAL
                 elif dy_ch == PLAYER or dy_ch == BOX:
                     output += dy_ch
                 else:
