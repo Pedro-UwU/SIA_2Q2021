@@ -1,3 +1,6 @@
+import configparser
+import os
+
 from DataReader import DataReader
 from clases.Guerrero import Guerrero
 from clases.Defensor import Defensor
@@ -13,6 +16,10 @@ from armamentos.Casco import Casco
 from Personaje import Personaje
 
 if __name__ == '__main__':
+    dirname = os.path.dirname(__file__)
+    configPath = os.path.join(dirname, 'config.conf')
+
+
     # guerrero = Guerrero()
     # defensor = Defensor()
     # arquero = Arquero()
@@ -63,7 +70,17 @@ if __name__ == '__main__':
     # print(personaje.pericia())
     # print(personaje.resistencia())
     # print(personaje.vida())
-    reader = DataReader('data', 0, 0, 0, 0, 0)
+    parser = configparser.ConfigParser()
+    parser.read(configPath)
+
+    data_dir = os.path.join(dirname, parser.get('config', 'DATA_DIR'))
+    total_weapons = parser.getint('config', 'TOTAL_WEAPONS')
+    total_boots = parser.getint('config', 'TOTAL_BOOTS')
+    total_helmets = parser.getint('config', 'TOTAL_HELMETS')
+    total_gloves = parser.getint('config', 'TOTAL_GLOVES')
+    total_chestplates = parser.getint('config', 'TOTAL_CHESTPLATES')
+
+    reader = DataReader(data_dir, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)
     reader.get('gloves', 99999)
 
 
