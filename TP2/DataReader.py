@@ -1,3 +1,6 @@
+import os
+
+
 class DataReader:
     names = {
         'weapons': 'armas',
@@ -19,7 +22,9 @@ class DataReader:
         if piece not in DataReader.names:
             raise Exception('Invalid armor piece')
         piece = DataReader.names[piece]
-        file = open(f'{self.dir_name}/{piece}.tsv', 'r+')
+        source_dir = os.path.join(self.dir_name, f'{piece}.tsv')
+        print(f'{source_dir = }')
+        file = open(f'{source_dir}', 'r')
         for i, line in enumerate(file):
             if i == (index+1):
                 print(line)
