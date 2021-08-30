@@ -1,10 +1,7 @@
 import math
 from dataclasses import dataclass, field
 
-from armamentos.Bota import Bota
-from armamentos.Guante import Guante
-from armamentos.Pechera import Pechera
-from armamentos.Casco import Casco
+from armamentos.Armamento import Armamento
 from armamentos.Arma import Arma
 
 from clases.Clase import Clase
@@ -14,11 +11,15 @@ from clases.Clase import Clase
 class Personaje():
     clase: Clase = field()
     altura: float = field()
-    bota: Bota = field()
-    casco: Casco = field()
-    guante: Guante = field()
-    pechera: Pechera = field()
+    bota: Armamento = field()
+    casco: Armamento = field()
+    guante: Armamento = field()
+    pechera: Armamento = field()
     arma: Arma = field()
+
+    @property
+    def clase(self):
+        return self.clase
 
     def atm(self):
         base = 3 * self.altura - 5

@@ -81,6 +81,6 @@ if __name__ == '__main__':
     total_chestplates = parser.getint('config', 'TOTAL_CHESTPLATES')
 
     reader = DataReader(data_dir, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)
-    reader.get('gloves', 99999)
-
+    w1 = reader.get('weapon', 1)
+    w2 = reader.get('weapon', 1)
 
