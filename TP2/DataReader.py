@@ -46,3 +46,19 @@ class DataReader:
                                       float(stats[4]), float(stats[5]))
                 self.buffer[index] = armamento
                 return armamento
+
+    def get_all(self, piece) -> list[Armamento]:
+        if piece not in DataReader.names:
+            raise Exception('Invalid armor piece')
+        file_name = DataReader.names[piece]
+        source_dir = os.path.join(self.dir_name, f'{file_name}.tsv')
+        file = open(f'{source_dir}', 'r')
+        output = []
+        for i, line in enumerate(file):
+            if i == 0:
+                continue
+            stats = line.split('\t')
+            stats = [float(x) for x in stats]
+            armamento = Armamento(int(stats[0]), piece, float(stats[1]), float(stats[2]), float(stats[3]), float(stats[4]), float(stats[5]))
+            output.append(armamento)
+        return output

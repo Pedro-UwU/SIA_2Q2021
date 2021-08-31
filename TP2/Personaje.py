@@ -1,4 +1,5 @@
 import math
+import random
 from dataclasses import dataclass, field
 
 from armamentos.Armamento import Armamento
@@ -8,14 +9,14 @@ from clases.Clase import Clase
 
 
 @dataclass(frozen=True)
-class Personaje():
+class Personaje:
     clase: Clase = field()
     altura: float = field()
     bota: Armamento = field()
     casco: Armamento = field()
     guante: Armamento = field()
     pechera: Armamento = field()
-    arma: Arma = field()
+    arma: Armamento = field()
 
     @property
     def clase(self):

@@ -12,9 +12,6 @@ from armamentos.Bota import Bota
 from armamentos.Guante import Guante
 from armamentos.Pechera import Pechera
 from armamentos.Casco import Casco
-
-from Personaje import Personaje
-
 if __name__ == '__main__':
     dirname = os.path.dirname(__file__)
     configPath = os.path.join(dirname, 'config.conf')
@@ -81,6 +78,6 @@ if __name__ == '__main__':
     total_chestplates = parser.getint('config', 'TOTAL_CHESTPLATES')
 
     reader = DataReader(data_dir, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)
-    w1 = reader.get('weapon', 1)
-    w2 = reader.get('weapon', 1)
+    # armas = reader.get_all('weapon')
+    # print(len(armas))
 
