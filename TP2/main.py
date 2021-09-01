@@ -1,6 +1,7 @@
 import configparser
 import os
 
+from Selection_Algorithm.Selection import Selection
 from DataReader import DataReader
 from Genetic_Algorithm.Genetic import Genetic
 from Personaje import Personaje
@@ -27,7 +28,14 @@ if __name__ == '__main__':
     total_gloves = parser.getint('config', 'TOTAL_GLOVES')
     total_chestplates = parser.getint('config', 'TOTAL_CHESTPLATES')
 
-    reader = DataReader.init_reader(data_dir, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)
+    constant_a = parser.getfloat('config', 'A')
+    constant_b = parser.getfloat('config', 'B')
+    constant_k = parser.getfloat('config', 'K')
+
+    selection = Selection(constant_a, constant_b, constant_k)
+
+
+    reader = DataReader(data_dir, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)
     # armas = reader.get_all('weapon')
     # print(len(armas))
     Genetic.genetic_algorithm(100, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)

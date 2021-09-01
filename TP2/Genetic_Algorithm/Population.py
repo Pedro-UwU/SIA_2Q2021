@@ -21,6 +21,7 @@ class Population:
 
     def sort_by_fitness(self):
         self.pop.sort(key=lambda x: x.fitness)
+        return self.pop
 
     # TODO
     @classmethod
