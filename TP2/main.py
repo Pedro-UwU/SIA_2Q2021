@@ -2,6 +2,7 @@ import configparser
 import os
 
 from DataReader import DataReader
+from Personaje import Personaje
 from clases.Guerrero import Guerrero
 from clases.Defensor import Defensor
 from clases.Arquero import Arquero
@@ -77,7 +78,9 @@ if __name__ == '__main__':
     total_gloves = parser.getint('config', 'TOTAL_GLOVES')
     total_chestplates = parser.getint('config', 'TOTAL_CHESTPLATES')
 
-    reader = DataReader(data_dir, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)
+    reader = DataReader.init_reader(data_dir, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)
     # armas = reader.get_all('weapon')
     # print(len(armas))
+    player = Personaje(Guerrero(), 1.5, 0, 0, 0, 0, 0)
+    print(player.resistencia())
 

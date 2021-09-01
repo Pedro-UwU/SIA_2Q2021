@@ -6,9 +6,9 @@ from armamentos.Armamento import Armamento
 class DataReader:
     names = {
         'weapon': 'armas',
-        'boot': 'botas',
+        'boots': 'botas',
         'helmet': 'cascos',
-        'glove': 'guantes',
+        'gloves': 'guantes',
         'chestplate': 'pecheras'
     }
 
@@ -21,6 +21,8 @@ class DataReader:
         'Vi': 5
     }
 
+    reader = None
+
     def __init__(self, dir_name, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates):
         self.dir_name: str = dir_name
         self.total_weapons: int = total_weapons
@@ -29,23 +31,34 @@ class DataReader:
         self.total_chestplates: int = total_chestplates
         self.total_gloves: int = total_gloves
         self.buffer = {}
+        self.totals = {
+            'weapon': total_weapons,
+            'boots': total_boots,
+            'helmet': total_helmets,
+            'chestplate': total_chestplates,
+            'gloves': total_gloves,
+        }
+
 
     def get(self, piece, index) -> Armamento:
         if piece not in DataReader.names:
             raise Exception('Invalid armor piece')
-        if index in self.buffer:
-            return self.buffer[index]
+        if (index, piece) in self.buffer:
+            return self.buffer[(index, piece)]
         file_name = DataReader.names[piece]
         source_dir = os.path.join(self.dir_name, f'{file_name}.tsv')
         file = open(f'{source_dir}', 'r')
         for i, line in enumerate(file):
+            if i > self.totals[piece]:
+                raise Exception('Index out of range')
             if i == (index + 1):
                 stats = line.split('\t')
                 stats = [float(x) for x in stats]
                 armamento = Armamento(int(stats[0]), piece, float(stats[1]), float(stats[2]), float(stats[3]),
                                       float(stats[4]), float(stats[5]))
-                self.buffer[index] = armamento
+                self.buffer[(index, piece)] = armamento
                 return armamento
+        raise Exception('Index out of range')
 
     def get_all(self, piece) -> list[Armamento]:
         if piece not in DataReader.names:
@@ -62,3 +75,7 @@ class DataReader:
             armamento = Armamento(int(stats[0]), piece, float(stats[1]), float(stats[2]), float(stats[3]), float(stats[4]), float(stats[5]))
             output.append(armamento)
         return output
+
+    @staticmethod
+    def init_reader(dir_name, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates):
+        DataReader.reader = DataReader(dir_name, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)
