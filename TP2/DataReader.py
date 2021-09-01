@@ -49,7 +49,7 @@ class DataReader:
         source_dir = os.path.join(self.dir_name, f'{file_name}.tsv')
         file = open(f'{source_dir}', 'r')
         for i, line in enumerate(file):
-            if i > self.totals[piece]:
+            if i > self.totals[piece] + 1:
                 raise Exception('Index out of range')
             if i == (index + 1):
                 stats = line.split('\t')

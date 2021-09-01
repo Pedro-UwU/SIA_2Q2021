@@ -2,14 +2,17 @@ import random
 from dataclasses import dataclass, field
 
 from DataReader import DataReader
-from Genetic_Algorithm.Individual import Individual
 from Personaje import Personaje
+from clases.Arquero import Arquero
 from clases.Clase import Clase
+from clases.Defensor import Defensor
+from clases.Guerrero import Guerrero
+from clases.Infiltrado import Infiltrado
 
 
 @dataclass
 class Population:
-    pop: list[Individual] = field(default_factory=list, init=False)
+    pop: list[Personaje] = field(default_factory=list, init=False)
     size: int = field()
 
     def calc_fitness(self):
@@ -20,15 +23,12 @@ class Population:
         self.pop.sort(key=lambda x: x.fitness)
 
     # TODO
-    # @classmethod
-    # def generate_random(cls, size: int, player_class: Clase, reader: DataReader):
-    #     new_pop = Population(size)
-    #     for i in range(size):
-    #         weapon_id = random.randint(0, 999999)
-    #         boot_id = random.randint(0, 999999)
-    #         helmet_id = random.randint(0, 999999)
-    #         glove_id = random.randint(0, 999999)
-    #         chestplate_id = random.randint(0, 999999)
-    #
-    #         player = Personaje(player_class, random.uniform(1.3, 2.0), reader.get('weapon', weapon_id), )
-    #         new_pop.pop.append()
+    @classmethod
+    def generate_random(cls, size: int, total_weapons: int, total_boots: int, total_helmet: int, total_gloves: int, total_chestplates: int):
+        new_pop = Population(size)
+        classes = [Arquero, Defensor, Guerrero, Infiltrado]
+        for i in range(size):
+            class_rnd = random.randrange(0, len(classes))
+            p = Personaje(classes[class_rnd](), random.uniform(1.3, 2.0), random.randint(0, total_weapons), random.randint(0, total_boots), random.randint(0, total_helmet), random.randint(0, total_gloves), random.randint(0, total_chestplates))
+            new_pop.pop.append(p)
+        return new_pop

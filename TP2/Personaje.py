@@ -14,8 +14,10 @@ class Personaje:
     # 2 -> helmet
     # 3 -> gloves
     # 4 -> chest plate
+    fitness: float = 0
 
-    def __init__(self, clase: Clase, height: float, weapon_id: int, boots_id: int, helmet_id: int, gloves_id: int, chestplate_id: int):
+    def __init__(self, clase: Clase, height: float, weapon_id: int, boots_id: int, helmet_id: int, gloves_id: int,
+                 chestplate_id: int):
         self.clase = clase
         self.altura = height
         self.equipment = [weapon_id, boots_id, helmet_id, gloves_id, chestplate_id]
@@ -98,3 +100,11 @@ class Personaje:
         chestplate = DataReader.reader.get('chestplate', self.equipment[4]).fuerza
         weapon = DataReader.reader.get('weapon', self.equipment[0]).fuerza
         return boots + helmet + gloves + chestplate + weapon
+
+    def calc_fitness(self):
+        if self.fitness == 0:
+            self.fitness = self.clase.attack_constant * self.ataque() + self.clase.defense_constant * self.defensa()
+        return self.fitness
+
+    def __repr__(self):
+        return f'Clase: {self.clase.__class__.__name__}, Altura: {self.altura}, Armamento: {self.equipment}, Fitness: {self.fitness}'
