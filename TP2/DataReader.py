@@ -39,7 +39,6 @@ class DataReader:
             'gloves': total_gloves,
         }
 
-
     def get(self, piece, index) -> Armamento:
         if piece not in DataReader.names:
             raise Exception('Invalid armor piece')
@@ -72,10 +71,12 @@ class DataReader:
                 continue
             stats = line.split('\t')
             stats = [float(x) for x in stats]
-            armamento = Armamento(int(stats[0]), piece, float(stats[1]), float(stats[2]), float(stats[3]), float(stats[4]), float(stats[5]))
+            armamento = Armamento(int(stats[0]), piece, float(stats[1]), float(stats[2]), float(stats[3]),
+                                  float(stats[4]), float(stats[5]))
             output.append(armamento)
         return output
 
     @staticmethod
     def init_reader(dir_name, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates):
-        DataReader.reader = DataReader(dir_name, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)
+        DataReader.reader = DataReader(dir_name, total_weapons, total_boots, total_helmets, total_gloves,
+                                       total_chestplates)

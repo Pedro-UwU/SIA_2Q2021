@@ -4,6 +4,7 @@ import os
 
 from dataclasses import dataclass, field
 
+from Config import Config
 from Genetic_Algorithm.Population import Population
 from Selection_Algorithm import Elite, Roulette
 
@@ -13,6 +14,10 @@ class Selection:
     constant_A: float = field()
     constant_B: float = field()
     constant_K: int = field()
+    selection_method_1 = None
+    selection_method_2 = None
+    selection_method_3 = None
+    selection_method_4 = None
 
     def __init__(self):
         dirname = os.path.dirname(__file__)
@@ -69,6 +74,21 @@ class Selection:
         selected_population_method_4 = self.method_4.select_individuals(population,
                                                                         amount_missing * (1 - self.constant_B))
         return kids + selected_population_method_3 + selected_population_method_4
+
+    @staticmethod
+    def load_selection_methods():
+        #method1
+        if Config.config.method1 == 'ELITE':
+            Selection.selection_method_1 = Selection.elite
+
+        if Config.config.method2 == 'ELITE':
+            Selection.selection_method_2 = Selection.elite
+
+        if Config.config.method3 == 'ELITE':
+            Selection.selection_method_3 = Selection.elite
+
+        if Config.config.method3 == 'ELITE':
+            Selection.selection_method_4 = Selection.elite
 
     @staticmethod
     def elite(pop: Population, k: int):
