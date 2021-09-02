@@ -1,6 +1,7 @@
 import configparser
 import math
 import os
+import random
 
 from dataclasses import dataclass, field
 
@@ -77,18 +78,26 @@ class Selection:
 
     @staticmethod
     def load_selection_methods():
-        #method1
+        # method1
         if Config.config.method1 == 'ELITE':
             Selection.selection_method_1 = Selection.elite
+        elif Config.config.method1 == 'ROULETTE':
+            Selection.selection_method_1 = Selection.roulette
 
         if Config.config.method2 == 'ELITE':
             Selection.selection_method_2 = Selection.elite
+        elif Config.config.method2 == 'ROULETTE':
+            Selection.selection_method_2 = Selection.roulette
 
         if Config.config.method3 == 'ELITE':
             Selection.selection_method_3 = Selection.elite
+        elif Config.config.method3 == 'ROULETTE':
+            Selection.selection_method_3 = Selection.roulette
 
-        if Config.config.method3 == 'ELITE':
+        if Config.config.method4 == 'ELITE':
             Selection.selection_method_4 = Selection.elite
+        elif Config.config.method4 == 'ROULETTE':
+            Selection.selection_method_4 = Selection.roulette
 
     @staticmethod
     def elite(pop: Population, k: int):
@@ -101,3 +110,30 @@ class Selection:
                     return new_pop
                 new_pop.pop.append(pop.pop[i])
         return new_pop
+
+    @staticmethod
+    def roulette(pop: Population, k: int):
+        total_fitness = pop.total_fitness
+        for p in pop.pop:
+            p.pseudo_fitness = p.fitness / total_fitness
+        acum = 0
+        return Selection._aux_roulette(pop, k)
+
+    @staticmethod
+    def _aux_roulette(pop: Population, k: int):  # Roullete with pseudo-fitness calculed
+        new_pop = Population(k)
+        for i in range(k):
+            rnd = random.uniform(0, 1)
+            p = Selection._select_from_roullete(pop, rnd)
+            new_pop.pop.append(p)
+        return new_pop
+
+    @staticmethod
+    def _select_from_roullete(pop: Population, rnd: float):
+        orig = rnd
+        while rnd > 0:  # por si tiene que dar mas vueltas
+            for p in pop.pop:
+                rnd -= p.pseudo_fitness
+                if rnd <= 0:
+                    return p
+        raise Exception('ERROR in selection')

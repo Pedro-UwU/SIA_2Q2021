@@ -1,10 +1,8 @@
 from Config import Config
 from Genetic_Algorithm.Crossover import Crossover
 from Genetic_Algorithm.Mutation import Mutation
-from Genetic_Algorithm.Population import Population
 from Selection_Algorithm.Selection import *
 from clases.Arquero import Arquero
-from clases.Clase import Clase
 from clases.Defensor import Defensor
 from clases.Guerrero import Guerrero
 from clases.Infiltrado import Infiltrado
@@ -41,7 +39,7 @@ class Genetic:
         A = int(Config.config.A * cross_size)
         B = int(Config.config.B * pop_size)
         # print(f'Init Gen: \n{init_pop}')
-        while gen < 1000:
+        while gen < 500:
             fathers1 = Selection.selection_method_1(current_pop, A)
             fathers2 = Selection.selection_method_2(current_pop, cross_size - A)
             # print(f'FATHERS 1: \n{fathers1}')
@@ -49,8 +47,9 @@ class Genetic:
 
             cross1 = Crossover.pointCross(fathers1)
             cross2 = Crossover.pointCross(fathers2)
+            cross1.calc_fitness()
+            cross2.calc_fitness()
             cross = Population.union(cross1, cross2)
-            cross.calc_fitness()
             # print(f'Cross: \n{cross}')
             if Config.config.genetic_implementation == 'Fill All':
                 union = Population.union(cross, current_pop)

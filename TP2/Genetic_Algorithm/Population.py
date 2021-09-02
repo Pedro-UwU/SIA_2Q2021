@@ -14,10 +14,12 @@ from clases.Infiltrado import Infiltrado
 class Population:
     pop: list[Personaje] = field(default_factory=list, init=False)
     size: int = field()
+    total_fitness = 0
 
     def calc_fitness(self):
         for p in self.pop:
-            p.calc_fitness()
+            f = p.calc_fitness()
+            self.total_fitness += f
 
     def sort_by_fitness(self):
         self.pop.sort(key=lambda x: -x.fitness)
@@ -26,7 +28,11 @@ class Population:
     def get_first_fitness(self):
         return self.pop[0].fitness
 
-    # TODO
+    def calc_max_fitness(self):
+        self.total_fitness = 0
+        for p in self.pop:
+            self.total_fitness += p.fitness
+
     @classmethod
     def generate_random(cls, player_class, size: int, total_weapons: int, total_boots: int, total_helmet: int, total_gloves: int, total_chestplates: int):
         new_pop = Population(size)
@@ -42,6 +48,7 @@ class Population:
             new_pop.pop.append(p)
         for p in pop2.pop:
             new_pop.pop.append(p)
+        new_pop.calc_max_fitness()
         return new_pop
 
     def __str__(self):
