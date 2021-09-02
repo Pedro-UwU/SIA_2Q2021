@@ -5,9 +5,10 @@ from Selection_Algorithm.Selection import Selection
 from DataReader import DataReader
 from Genetic_Algorithm.Genetic import Genetic
 from Personaje import Personaje
+from clases.Arquero import Arquero
+
 from clases.Guerrero import Guerrero
 from clases.Defensor import Defensor
-from clases.Arquero import Arquero
 from clases.Infiltrado import Infiltrado
 
 from armamentos.Arma import Arma
@@ -15,6 +16,7 @@ from armamentos.Bota import Bota
 from armamentos.Guante import Guante
 from armamentos.Pechera import Pechera
 from armamentos.Casco import Casco
+
 if __name__ == '__main__':
     dirname = os.path.dirname(__file__)
     configPath = os.path.join(dirname, 'config.conf')
@@ -32,11 +34,10 @@ if __name__ == '__main__':
     constant_b = parser.getfloat('config', 'B')
     constant_k = parser.getfloat('config', 'K')
 
-    selection = Selection(constant_a, constant_b, constant_k)
+    # selection = Selection(constant_a, constant_b, constant_k)
 
-
-    reader = DataReader(data_dir, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)
+    # reader = DataReader(data_dir, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)
     # armas = reader.get_all('weapon')
     # print(len(armas))
-    Genetic.genetic_algorithm(100, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)
-
+    DataReader.init_reader(data_dir, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)
+    Genetic.genetic_algorithm('Archer', 10, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)

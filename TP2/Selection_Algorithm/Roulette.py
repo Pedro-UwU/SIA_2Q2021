@@ -1,5 +1,5 @@
-from Genetic_Algorithm import Individual
 from Genetic_Algorithm.Population import Population
+from Personaje import Personaje
 
 
 class Roulette:
@@ -9,7 +9,7 @@ class Roulette:
         if amount < population.pop.count():
             return population.sort_by_fitness()[amount:]
 
-        selected: list[Individual]
+        selected: list[Personaje]
         missing = amount - selected.count()
         while missing > 0:
             if missing >= population.pop.count():

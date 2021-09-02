@@ -1,4 +1,5 @@
 import configparser
+import math
 import os
 
 from dataclasses import dataclass, field
@@ -46,7 +47,8 @@ class Selection:
 
     def fill_all(self, population: Population, kids: Population):
         selected_population_method_3 = self.method_3.select_individuals(population, self.constant_B * self.constant_K)
-        selected_population_method_4 = self.method_4.select_individuals(population, (1 - self.constant_B) * self.constant_K)
+        selected_population_method_4 = self.method_4.select_individuals(population,
+                                                                        (1 - self.constant_B) * self.constant_K)
 
         selected_kids_method_3 = self.method_3.select_individuals(kids, self.constant_B * self.constant_K)
         selected_kids_method_4 = self.method_4.select_individuals(kids, (1 - self.constant_B) * self.constant_K)
@@ -64,5 +66,18 @@ class Selection:
 
         amount_missing = self.constant_K - kids.count()
         selected_population_method_3 = self.method_3.select_individuals(population, amount_missing * self.constant_B)
-        selected_population_method_4 = self.method_4.select_individuals(population, amount_missing * (1 - self.constant_B))
+        selected_population_method_4 = self.method_4.select_individuals(population,
+                                                                        amount_missing * (1 - self.constant_B))
         return kids + selected_population_method_3 + selected_population_method_4
+
+    @staticmethod
+    def elite(pop: Population, k: int):
+        new_pop = Population(k)
+        n = pop.size
+        for i in range(n):
+            total = math.ceil((k - i) / n)
+            for j in range(total):
+                if len(new_pop.pop) == k:
+                    return new_pop
+                new_pop.pop.append(pop.pop[i])
+        return new_pop

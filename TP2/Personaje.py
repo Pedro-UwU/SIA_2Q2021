@@ -107,4 +107,4 @@ class Personaje:
         return self.fitness
 
     def __repr__(self):
-        return f'Clase: {self.clase.__class__.__name__}, Altura: {self.altura}, Armamento: {self.equipment}, Fitness: {self.fitness}'
+        return f'Clase: {type(self.clase).__name__}, Altura: {self.altura}, Armamento: {self.equipment}, Fitness: {self.fitness}'
