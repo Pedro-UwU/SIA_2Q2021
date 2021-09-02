@@ -41,5 +41,5 @@ if __name__ == '__main__':
     # reader = DataReader(data_dir, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)
     # armas = reader.get_all('weapon')
     # print(len(armas))
-    DataReader.init_reader(Config.config.data_dir, Config.config.total_weapons, Config.config.total_boots, Config.config.total_helmets, Config.config.total_gloves, Config.config.total_chestplates)
+    DataReader.init_reader_with_pandas(Config.config.data_dir, Config.config.total_weapons, Config.config.total_boots, Config.config.total_helmets, Config.config.total_gloves, Config.config.total_chestplates)
     Genetic.genetic_algorithm('Archer')

@@ -1,5 +1,5 @@
 import os
-
+import pandas as pd
 from armamentos.Armamento import Armamento
 
 
@@ -38,10 +38,17 @@ class DataReader:
             'chestplate': total_chestplates,
             'gloves': total_gloves,
         }
+        self.pandas = False
+        self.dfs = {}
 
     def get(self, piece, index) -> Armamento:
         if piece not in DataReader.names:
             raise Exception('Invalid armor piece')
+        if self.pandas:
+            row = self.dfs[piece].iloc[index].values
+            row = [float(x) for x in row]
+            armamento = Armamento(index, piece, row[0], row[1], row[2], row[3], row[4])
+            return armamento
         if (index, piece) in self.buffer:
             return self.buffer[(index, piece)]
         file_name = DataReader.names[piece]
@@ -80,3 +87,16 @@ class DataReader:
     def init_reader(dir_name, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates):
         DataReader.reader = DataReader(dir_name, total_weapons, total_boots, total_helmets, total_gloves,
                                        total_chestplates)
+
+
+    @staticmethod
+    def init_reader_with_pandas(dir_name, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates):
+        print('Reading Data...')
+        DataReader.reader = DataReader(dir_name, total_weapons, total_boots, total_helmets, total_gloves,
+                                       total_chestplates)
+        DataReader.reader.pandas = True
+        for i in DataReader.names:
+            file_name = DataReader.names[i]
+            source_dir = os.path.join(dir_name, f'{file_name}.tsv')
+            DataReader.reader.dfs[i] = pd.read_table(source_dir, index_col='id')
+        print('Data Loaded')
