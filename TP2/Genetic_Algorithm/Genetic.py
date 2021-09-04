@@ -63,5 +63,23 @@ class Genetic:
                 new_pop.sort_by_fitness()
                 current_pop = new_pop
                 # print(f'New Gen: \n{current_pop}')
+
+            if Config.config.genetic_implementation == 'Fill Parent':
+                if len(cross.pop) > len(current_pop.pop):
+                    new_pop1 = Selection.selection_method_3(cross, B)
+                    new_pop2 = Selection.selection_method_4(cross, pop_size - B)
+                    new_pop = Population.union(new_pop1, new_pop2)
+                    new_pop.sort_by_fitness()
+                    current_pop = new_pop
+                else:
+                    amount_missing = int(Config.config.K) - len(cross.pop)
+                    B = int(Config.config.B * amount_missing)
+                    new_pop1 = Selection.selection_method_3(current_pop, B)
+                    new_pop2 = Selection.selection_method_4(current_pop, amount_missing - B)
+                    new_pop = Population.union(new_pop1, new_pop2)
+                    final_new_pop = Population.union(new_pop, cross)
+                    final_new_pop.sort_by_fitness()
+                    current_pop = final_new_pop
+
             gen += 1
             print(f'Generation: {gen}, Max Fitness: {current_pop.get_first_fitness()}')
