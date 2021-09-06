@@ -4,6 +4,7 @@ import os
 import random
 
 from dataclasses import dataclass, field
+from time import time
 
 from Config import Config
 from Genetic_Algorithm.Population import Population
@@ -57,7 +58,7 @@ class Selection:
             for j in range(total):
                 if len(new_pop.pop) == k:
                     return new_pop
-                new_pop.pop.append(pop.pop[i])
+                new_pop.pop.append(pop.pop[i].clone())
         return new_pop
 
     @staticmethod
@@ -90,15 +91,86 @@ class Selection:
     @staticmethod
     def _select_from_roullete(pop: Population, rnd: float):
         orig = rnd
+        last_rnd = 0
         while rnd > 0:  # por si tiene que dar mas vueltas
             for p in pop.pop:
                 rnd -= p.pseudo_fitness
                 if rnd <= 0:
-                    return p
+                    return p.clone()
         raise Exception('ERROR in selection')
 
+    @staticmethod
+    def ranking(pop: Population, k: int):
+        n = len(pop.pop)
+        total = 0
+        for i in range(len(pop.pop)):
+            pop.pop[i].pseudo_fitness = (n - (i + 1))/n
+            total += pop.pop[i].pseudo_fitness
+
+        for p in pop.pop:
+            p.pseudo_fitness /= total
+
+        return Selection._aux_roulette(pop, k)
+
+    @staticmethod
+    def boltzman(pop: Population, k: int):
+        T0 = Config.config.boltzmann
+        T_c = Config.config.boltzmann_floor
+        t = Config.config.boltzmann_t
+        _k = Config.config.boltzmann_factor
+        T = T_c + (T0 - T_c)*math.exp(-_k*t)
+        Config.config.boltzmann_t = t+1
+        total = 0
+        count = 0
+        for p in pop.pop:
+            p.pseudo_fitness = math.exp(p.fitness/T)
+            total += p.pseudo_fitness
+            count += 1
+
+        avg = total/count
+
+        total_f = 0
+        for p in pop.pop:
+            p.pseudo_fitness /= avg
+            total_f += p.pseudo_fitness
+
+        for p in pop.pop:
+            p.pseudo_fitness /= total_f
+
+        return Selection._aux_roulette(pop, k)
+
+    @staticmethod
+    def tournament_deterministic(pop: Population, k: int):
+        M = Config.config.M
+        new_pop = Population(k)
+        for i in range(k):
+            sel = []
+            for j in range(M):
+                rnd = random.sample(pop.pop, 1)
+                sel.append(rnd[0])
+            sel.sort(key=lambda x: -x.fitness)
+            new_pop.pop.append(sel[0].clone())
+        return new_pop
+
+    @staticmethod
+    def tournament_probabilistic(pop: Population, k: int):
+        thr = Config.config.tournament_threshold
+        new_pop = Population(k)
+        for i in range(k):
+            sample = random.sample(pop.pop, 2)
+            sample.sort(key=lambda x: -x.fitness)
+            dice = random.uniform(0, 1)
+            if dice < thr:
+                new_pop.pop.append(sample[0].clone())
+            else:
+                new_pop.pop.append(sample[1].clone())
+        return new_pop
     _methods = {
         'ELITE': elite,
         'ROULETTE': roulette,
-        'UNIVERSAL': universal
+        'UNIVERSAL': universal,
+        'RANKING': ranking,
+        'BOLTZMANN': boltzman,
+        'DETERMINISTIC TOURNAMENT': tournament_deterministic,
+        'PROBABILISTIC TOURNAMENT': tournament_probabilistic
     }

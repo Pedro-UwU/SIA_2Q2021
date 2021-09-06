@@ -51,7 +51,7 @@ class Mutation:
         for p in pop.pop:
             dice = random.uniform(0, 1)
             if dice < prob:
-                m = random.randint(1,5)
+                m = random.randint(1, 5)
                 genes = random.sample(range(1, 6), m)
                 totals = {
                     0: Config.config.total_weapons,

@@ -122,4 +122,9 @@ class Personaje:
         return self.fitness
 
     def __repr__(self):
-        return f'Clase: {type(self.clase).__name__}, Altura: {self.altura}, Armamento: {self.equipment}, Fitness: {self.fitness}, PseudoFitness: {self.pseudo_fitness}'
+        return f'Clase: {type(self.clase).__name__}, Altura: {self.altura}, Armamento: {self.equipment}, Fitness: {self.fitness}'
+
+    def clone(self):
+        new_p = Personaje(self.clase, self.altura, self.equipment[0], self.equipment[1], self.equipment[2], self.equipment[3], self.equipment[4])
+        new_p.fitness = self.fitness
+        return new_p

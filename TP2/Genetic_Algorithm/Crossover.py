@@ -10,9 +10,11 @@ class Crossover:
     def pointCross(parents: Population):
         pop = random.sample(parents.pop, parents.size)
         new_pop = Population(parents.size)
+        odd = False
         # Si la poblacion es impar, le agrega el primero de nuevo
         if len(pop) % 2 == 1:
             pop.append(pop[0])
+            odd = True
 
         for i in range(0, len(pop), 2):
             locus = random.randint(0, Genetic.GENOTYPE_LENGTH)
@@ -42,4 +44,6 @@ class Crossover:
             new_pop.pop.append(child1)
             new_pop.pop.append(child2)
 
+        if odd:
+            new_pop.pop.pop(len(new_pop.pop)-1)
         return new_pop
