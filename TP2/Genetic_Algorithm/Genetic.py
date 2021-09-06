@@ -50,6 +50,8 @@ class Genetic:
         avg_fitness_record.append(current_pop.get_avg_fitness())
         plt.plot(gen_record, max_fitness_record)
 
+        max_f = current_pop.get_first_fitness();
+
 
         A = int(Config.config.A * cross_size)
         B = int(Config.config.B * pop_size)
@@ -104,5 +106,6 @@ class Genetic:
             avg_fitness_record.append(current_pop.get_avg_fitness())
             plt.plot(gen_record, max_fitness_record, 'b', gen_record, min_fitness_record, 'r', gen_record, avg_fitness_record, 'g')
             plt.pause(0.000000001)
-
-            print(f'Generation: {gen}, Max Fitness: {current_pop.get_first_fitness()}')
+            if current_pop.get_first_fitness() > max_f:
+                max_f = current_pop.get_first_fitness()
+                print(f'Generation: {gen}, Max Fitness: {current_pop.get_first_fitness()}, Individual: {current_pop.pop[0]}')
