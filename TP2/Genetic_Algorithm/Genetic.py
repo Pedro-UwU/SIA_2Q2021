@@ -1,3 +1,5 @@
+import time
+
 from Config import Config
 from Genetic_Algorithm.Crossover import Crossover
 from Genetic_Algorithm.Mutation import Mutation
@@ -6,6 +8,7 @@ from clases.Arquero import Arquero
 from clases.Defensor import Defensor
 from clases.Guerrero import Guerrero
 from clases.Infiltrado import Infiltrado
+import matplotlib.pyplot as plt
 
 GENOTYPE_LENGTH = 6
 
@@ -30,12 +33,24 @@ class Genetic:
         Selection.load_selection_methods()
         Mutation.load_mutation_method()
 
+        gen_record = []
+        max_fitness_record = []
+        min_fitness_record = []
+        avg_fitness_record = []
+
         init_pop = Population.generate_random(Genetic._classNames[player_class], pop_size, total_weapons, total_boots,
-                                                 total_helmets, total_gloves, total_chestplates)
+                                              total_helmets, total_gloves, total_chestplates)
         current_pop = init_pop
         current_pop.calc_fitness()
         current_pop.sort_by_fitness()
         gen = 0
+        gen_record.append(gen)
+        max_fitness_record.append(current_pop.get_first_fitness())
+        min_fitness_record.append(current_pop.get_last_fitness())
+        avg_fitness_record.append(current_pop.get_avg_fitness())
+        plt.plot(gen_record, max_fitness_record)
+
+
         A = int(Config.config.A * cross_size)
         B = int(Config.config.B * pop_size)
         # print(f'Init Gen: \n{init_pop}')
@@ -82,4 +97,12 @@ class Genetic:
                     current_pop = final_new_pop
 
             gen += 1
+
+            gen_record.append(gen)
+            max_fitness_record.append(current_pop.get_first_fitness())
+            min_fitness_record.append(current_pop.get_last_fitness())
+            avg_fitness_record.append(current_pop.get_avg_fitness())
+            plt.plot(gen_record, max_fitness_record, 'b', gen_record, min_fitness_record, 'r', gen_record, avg_fitness_record, 'g')
+            plt.pause(0.000000001)
+
             print(f'Generation: {gen}, Max Fitness: {current_pop.get_first_fitness()}')

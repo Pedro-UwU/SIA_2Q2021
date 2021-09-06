@@ -1,5 +1,7 @@
 import configparser
 import os
+import random
+from time import sleep
 
 from Config import Config
 from Selection_Algorithm.Selection import Selection
@@ -17,8 +19,22 @@ from armamentos.Bota import Bota
 from armamentos.Guante import Guante
 from armamentos.Pechera import Pechera
 from armamentos.Casco import Casco
+import matplotlib.pyplot as plt
+
+
 
 if __name__ == '__main__':
+
+    # x = []
+    # y = []
+    # plt.plot(x, y)
+    # for i in range(100):
+    #     x.append(i)
+    #     y.append(i*i)
+    #     plt.plot(x, y)
+    #     plt.pause(0.01)
+    #     plt.clf()
+
     dirname = os.path.dirname(__file__)
     configPath = os.path.join(dirname, 'config.conf')
     Config.init_config(configPath)

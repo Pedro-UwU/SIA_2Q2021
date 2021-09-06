@@ -28,7 +28,18 @@ class Population:
     def get_first_fitness(self):
         return self.pop[0].fitness
 
-    def calc_max_fitness(self):
+    def get_last_fitness(self):
+        return self.pop[-1].fitness
+
+    def get_avg_fitness(self):
+        total = 0
+        count = 0
+        for p in self.pop:
+            total += p.fitness
+            count += 1
+        return total/count
+
+    def calc_total_fitness(self):
         self.total_fitness = 0
         for p in self.pop:
             self.total_fitness += p.fitness
@@ -48,7 +59,7 @@ class Population:
             new_pop.pop.append(p)
         for p in pop2.pop:
             new_pop.pop.append(p)
-        new_pop.calc_max_fitness()
+        new_pop.calc_total_fitness()
         return new_pop
 
     def __str__(self):
