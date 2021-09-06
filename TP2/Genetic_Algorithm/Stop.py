@@ -15,10 +15,11 @@ class Stop:
     stop_time = None
     min_fitness = None
     population_portion = None
+    population_portion_streak = None
     generations_without_change = None
-    fitness_percentage_without_change = None
     max_fitness = None
     max_fitness_streak = None
+    population_set = None
 
     @staticmethod
     def initialize_stop():
@@ -39,7 +40,7 @@ class Stop:
         Stop.min_fitness = Config.config.min_fitness
         Stop.population_portion = Config.config.population_portion
         Stop.generations_without_change = Config.config.generations_without_change
-        Stop.fitness_percentage_without_change = Config.config.fitness_percentage_without_change
+        Stop.population_portion_streak = 0
         Stop.max_fitness_streak = 0
         Stop.max_fitness = 0
 
@@ -70,27 +71,53 @@ class Stop:
         # Structure
         if Stop.structure_method:
             # print("Entramos a ver x Structure")
-            pass
+            if Stop.population_portion_streak >= Stop.generations_without_change:
+                # print('Cortado por Structure')
+                return False
+            if Stop.population_set is None:
+                Stop.init_population_set(population)
+            else:
+                repeated_portion = Stop.calculate_repeated_portion(population)
+                if repeated_portion >= Stop.population_portion:
+                    # print("Poblacion repetida")
+                    Stop.population_portion_streak += 1
+                else:
+                    # print("No se repite la poblacion")
+                    Stop.init_population_set(population)
+                    Stop.population_portion_streak = 0
         # Content
         if Stop.content_method:
             # print("Entramos a ver x Content")
-            population.calc_total_fitness()
-
-            current_total_fitness = population.total_fitness
-            fitness_diff = abs(current_total_fitness - Stop.max_fitness)
-            streak = False
-            if fitness_diff <= Stop.max_fitness * Stop.fitness_percentage_without_change:
-                # print(f'Max Fitness: {Stop.max_fitness}, FitnessDiff: {fitness_diff}, generations: {generations}')
-                Stop.max_fitness_streak += 1
-                streak = True
 
             if Stop.max_fitness_streak >= Stop.generations_without_change:
                 # print('Cortado por Content')
                 return False
 
-            if current_total_fitness > Stop.max_fitness:
-                Stop.max_fitness = current_total_fitness
-                if not streak:
-                    Stop.max_fitness_streak = 0
+            population.calc_total_fitness()
+            if Stop.max_fitness == population.total_fitness:
+                Stop.max_fitness_streak += 1
 
+            if population.total_fitness > Stop.max_fitness:
+                Stop.max_fitness = population.total_fitness
+                Stop.max_fitness_streak = 0
+
+            if population.total_fitness < Stop.max_fitness:
+                Stop.max_fitness_streak = 0
         return True
+
+    @staticmethod
+    def init_population_set(population: Population):
+        # print('Inicializando el Set')
+
+        Stop.population_set = set()
+        for p in population.pop:
+            Stop.population_set.add(p)
+
+    @staticmethod
+    def calculate_repeated_portion(population: Population):
+        repeated = 0
+        for p in population.pop:
+            if p in Stop.population_set:
+                repeated += 1
+
+        return repeated / population.size

@@ -24,6 +24,18 @@ class Personaje:
         self.fitness = None
         self.pseudo_fitness = None
 
+    def __eq__(self, obj):
+        return isinstance(obj, Personaje) and \
+               obj.altura == self.altura and \
+               obj.equipment[0] == self.equipment[0] and \
+               obj.equipment[1] == self.equipment[1] and \
+               obj.equipment[2] == self.equipment[2] and \
+               obj.equipment[3] == self.equipment[3] and \
+               obj.equipment[4] == self.equipment[4]
+
+    def __hash__(self):
+        return hash((self.altura, self.equipment[0], self.equipment[1], self.equipment[2], self.equipment[3], self.equipment[4]))
+
     def atm(self):
         base = 3 * self.altura - 5
         return 0.7 - math.pow(base, 4) + math.pow(base, 2) + (self.altura / 4)
