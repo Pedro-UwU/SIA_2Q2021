@@ -1,30 +1,12 @@
 import configparser
 import os
-import random
-from time import sleep
 
 from Config import Config
-from Selection_Algorithm.Selection import Selection
 from DataReader import DataReader
 from Genetic_Algorithm.Genetic import Genetic
-from Personaje import Personaje
-from clases.Arquero import Arquero
-
-from clases.Guerrero import Guerrero
-from clases.Defensor import Defensor
-from clases.Infiltrado import Infiltrado
-
-from armamentos.Arma import Arma
-from armamentos.Bota import Bota
-from armamentos.Guante import Guante
-from armamentos.Pechera import Pechera
-from armamentos.Casco import Casco
-import matplotlib.pyplot as plt
-
 
 
 if __name__ == '__main__':
-
     # x = []
     # y = []
     # plt.plot(x, y)
@@ -57,5 +39,7 @@ if __name__ == '__main__':
     # reader = DataReader(data_dir, total_weapons, total_boots, total_helmets, total_gloves, total_chestplates)
     # armas = reader.get_all('weapon')
     # print(len(armas))
-    DataReader.init_reader_with_pandas(Config.config.data_dir, Config.config.total_weapons, Config.config.total_boots, Config.config.total_helmets, Config.config.total_gloves, Config.config.total_chestplates)
+    DataReader.init_reader_with_pandas(Config.config.data_dir, Config.config.total_weapons, Config.config.total_boots,
+                                       Config.config.total_helmets, Config.config.total_gloves,
+                                       Config.config.total_chestplates)
     Genetic.genetic_algorithm('Archer')

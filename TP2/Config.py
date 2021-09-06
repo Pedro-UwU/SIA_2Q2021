@@ -27,6 +27,12 @@ class Config:
         self.method2 = parser.get('selection', 'METHOD_2')
         self.method3 = parser.get('selection', 'METHOD_3')
         self.method4 = parser.get('selection', 'METHOD_4')
+        self.boltzmann = parser.getfloat('selection', 'BOLTZMANN_TEMPERATURE')
+        self.boltzmann_floor = parser.getfloat('selection', 'BOLTZMANN_MIN_TEMPERATURE')
+        self.boltzmann_factor = parser.getfloat('selection', 'BOLTZMANN_DECREASE_FACTOR')
+        self.boltzmann_t = 0
+        self.M = parser.getint('selection', 'TOURNAMENT_M')
+        self.tournament_threshold = parser.getfloat('selection', 'TOURNAMENT_THRESHOLD')
 
         self.mutation_method = parser.get('mutation', 'METHOD')
         self.mutation_prob = parser.getfloat('mutation', 'MUTATION_PROB')
