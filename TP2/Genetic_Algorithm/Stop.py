@@ -48,45 +48,45 @@ class Stop:
     def must_continue(generations: int, population: Population, start_time: float):
         # Time
         if Stop.time_method:
-            print("Entramos a ver x Time")
+            # print("Entramos a ver x Time")
             current_time = time.perf_counter()
-            print(f'Tiempo transcurrido: \n{current_time - start_time}')
+            # print(f'Tiempo transcurrido: \n{current_time - start_time}')
             if current_time - start_time >= Stop.stop_time:
-                print('Cortado por Tiempo')
+                # print('Cortado por Tiempo')
                 return False
         # Generations
         if Stop.generations_method:
-            print("Entramos a ver x Generations")
+            # print("Entramos a ver x Generations")
             if Stop.stop_generations <= generations:
-                print('Cortado por Generaciones')
+                # print('Cortado por Generaciones')
                 return False
         # Fitness Objective
         if Stop.fitness_objective_method:
-            print("Entramos a ver x Fitness Objective")
+            # print("Entramos a ver x Fitness Objective")
             population.calc_total_fitness()
             total_fitness = population.total_fitness
             if Stop.min_fitness <= total_fitness:
-                print('Cortado por Min Fitness')
+                # print('Cortado por Min Fitness')
                 return False
         # Structure
         if Stop.structure_method:
-            print("Entramos a ver x Structure")
+            # print("Entramos a ver x Structure")
             pass
         # Content
         if Stop.content_method:
-            print("Entramos a ver x Content")
+            # print("Entramos a ver x Content")
             population.calc_total_fitness()
 
             current_total_fitness = population.total_fitness
             fitness_diff = abs(current_total_fitness - Stop.max_fitness)
             streak = False
             if fitness_diff <= Stop.max_fitness * Stop.fitness_percentage_without_change:
-                print(f'Max Fitness: {Stop.max_fitness}, FitnessDiff: {fitness_diff}, generations: {generations}')
+                # print(f'Max Fitness: {Stop.max_fitness}, FitnessDiff: {fitness_diff}, generations: {generations}')
                 Stop.max_fitness_streak += 1
                 streak = True
 
             if Stop.max_fitness_streak >= Stop.generations_without_change:
-                print('Cortado por Content')
+                # print('Cortado por Content')
                 return False
 
             if current_total_fitness > Stop.max_fitness:
