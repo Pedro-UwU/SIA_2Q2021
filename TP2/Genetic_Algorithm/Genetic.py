@@ -1,6 +1,7 @@
 import time
 
 from Config import Config
+from Genetic_Algorithm.Stop import Stop
 from Genetic_Algorithm.Crossover import Crossover
 from Genetic_Algorithm.Mutation import Mutation
 from Selection_Algorithm.Selection import *
@@ -23,6 +24,8 @@ class Genetic:
 
     @staticmethod
     def genetic_algorithm(player_class):
+        start_time = time.perf_counter()
+        Stop.initialize_stop()
         pop_size = Config.config.N
         cross_size = Config.config.K
         total_gloves = Config.config.total_gloves
@@ -52,11 +55,10 @@ class Genetic:
 
         max_f = current_pop.get_first_fitness();
 
-
         A = int(Config.config.A * cross_size)
         B = int(Config.config.B * pop_size)
         # print(f'Init Gen: \n{init_pop}')
-        while gen < 500:
+        while Stop.must_continue(gen, current_pop, start_time):
             fathers1 = Selection.selection_method_1(current_pop, A)
             fathers2 = Selection.selection_method_2(current_pop, cross_size - A)
             # print(f'FATHERS 1: \n{fathers1}')
@@ -82,6 +84,8 @@ class Genetic:
                 # print(f'New Gen: \n{current_pop}')
 
             if Config.config.genetic_implementation == 'Fill Parent':
+                Mutation.method(cross)
+                cross.sort_by_fitness()
                 if len(cross.pop) > len(current_pop.pop):
                     new_pop1 = Selection.selection_method_3(cross, B)
                     new_pop2 = Selection.selection_method_4(cross, pop_size - B)
@@ -91,6 +95,8 @@ class Genetic:
                 else:
                     amount_missing = int(Config.config.K) - len(cross.pop)
                     B = int(Config.config.B * amount_missing)
+                    Mutation.method(current_pop)
+                    current_pop.sort_by_fitness()
                     new_pop1 = Selection.selection_method_3(current_pop, B)
                     new_pop2 = Selection.selection_method_4(current_pop, amount_missing - B)
                     new_pop = Population.union(new_pop1, new_pop2)
