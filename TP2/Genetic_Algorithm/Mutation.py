@@ -106,9 +106,9 @@ class Mutation:
     def complete_mutation(pop: Population):
         prob = Config.config.mutation_prob
         for p in pop.pop:
+            dice = random.uniform(0, 1)
             if dice < prob:
                 # Height
-                dice = random.uniform(0, 1)
                 while True:
                     diff = random.uniform(-0.1, 0.1)
                     if 1.3 <= (p.altura + diff) <= 2.0:

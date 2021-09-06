@@ -31,6 +31,14 @@ class Config:
         self.mutation_method = parser.get('mutation', 'METHOD')
         self.mutation_prob = parser.getfloat('mutation', 'MUTATION_PROB')
 
+        self.stop_decision = parser.get('stop', 'STOP_DECISION')
+        self.stop_generations = parser.getint('stop', 'GENERATIONS')
+        self.stop_time = parser.getint('stop', 'TIME')
+        self.min_fitness = parser.getfloat('stop', 'MIN_FITNESS')
+        self.population_portion = parser.getfloat('stop', 'POPULATION_PORTION')
+        self.generations_without_change = parser.getint('stop', 'GENERATIONS_WITHOUT_CHANGE')
+        self.fitness_percentage_without_change = parser.getfloat('stop', 'FITNESS_PERCENTAGE_WITHOUT_CHANGE')
+
     @staticmethod
     def init_config(config_name: str):
         Config.config = Config(config_name)

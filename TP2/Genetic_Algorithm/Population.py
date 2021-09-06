@@ -42,7 +42,8 @@ class Population:
     def calc_total_fitness(self):
         self.total_fitness = 0
         for p in self.pop:
-            self.total_fitness += p.fitness
+            f = p.calc_fitness()
+            self.total_fitness += f
 
     @classmethod
     def generate_random(cls, player_class, size: int, total_weapons: int, total_boots: int, total_helmet: int, total_gloves: int, total_chestplates: int):
