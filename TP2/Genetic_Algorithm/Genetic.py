@@ -64,8 +64,8 @@ class Genetic:
             # print(f'FATHERS 1: \n{fathers1}')
             # print(f'FATHERS 2: \n{fathers2}')
 
-            cross1 = Crossover.pointCross(fathers1)
-            cross2 = Crossover.pointCross(fathers2)
+            cross1 = Crossover.uniformCross(fathers1)
+            cross2 = Crossover.uniformCross(fathers2)
             cross1.calc_fitness()
             cross2.calc_fitness()
             cross = Population.union(cross1, cross2)
