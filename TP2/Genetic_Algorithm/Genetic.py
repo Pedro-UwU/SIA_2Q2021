@@ -1,15 +1,14 @@
-import time
+import matplotlib.pyplot as plt
 
-from Config import Config
-from Genetic_Algorithm.Stop import Stop
 from Genetic_Algorithm.Crossover import Crossover
 from Genetic_Algorithm.Mutation import Mutation
+from Genetic_Algorithm.Stop import Stop
 from Selection_Algorithm.Selection import *
 from clases.Arquero import Arquero
 from clases.Defensor import Defensor
 from clases.Guerrero import Guerrero
 from clases.Infiltrado import Infiltrado
-import matplotlib.pyplot as plt
+import time
 
 GENOTYPE_LENGTH = 6
 
@@ -24,6 +23,7 @@ class Genetic:
 
     @staticmethod
     def genetic_algorithm(player_class):
+
         start_time = time.perf_counter()
         Stop.initialize_stop()
         pop_size = Config.config.N
