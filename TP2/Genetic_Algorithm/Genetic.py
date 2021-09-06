@@ -110,8 +110,11 @@ class Genetic:
             max_fitness_record.append(current_pop.get_first_fitness())
             min_fitness_record.append(current_pop.get_last_fitness())
             avg_fitness_record.append(current_pop.get_avg_fitness())
-            plt.plot(gen_record, max_fitness_record, 'b', gen_record, min_fitness_record, 'r', gen_record, avg_fitness_record, 'g')
-            plt.pause(0.000000001)
+            if Config.config.real_time_graph:
+                plt.plot(gen_record, max_fitness_record, 'b', gen_record, min_fitness_record, 'r', gen_record, avg_fitness_record, 'g')
+                plt.pause(0.000000001)
             if current_pop.get_first_fitness() > max_f:
                 max_f = current_pop.get_first_fitness()
                 print(f'Generation: {gen}, Max Fitness: {current_pop.get_first_fitness()}, Individual: {current_pop.pop[0]}')
+        plt.plot(gen_record, max_fitness_record, 'b', gen_record, min_fitness_record, 'r', gen_record, avg_fitness_record, 'g')
+        plt.pause(0.000000001)

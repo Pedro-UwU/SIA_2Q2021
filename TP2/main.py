@@ -43,3 +43,5 @@ if __name__ == '__main__':
                                        Config.config.total_helmets, Config.config.total_gloves,
                                        Config.config.total_chestplates)
     Genetic.genetic_algorithm('Archer')
+
+    input(' --- Press Enter to EXIT --- ')

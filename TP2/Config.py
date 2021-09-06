@@ -45,6 +45,7 @@ class Config:
         self.generations_without_change = parser.getint('stop', 'GENERATIONS_WITHOUT_CHANGE')
         self.fitness_percentage_without_change = parser.getfloat('stop', 'FITNESS_PERCENTAGE_WITHOUT_CHANGE')
 
+        self.real_time_graph = parser.getboolean('visualization', 'REAL_TIME_GRAPH')
     @staticmethod
     def init_config(config_name: str):
         Config.config = Config(config_name)
