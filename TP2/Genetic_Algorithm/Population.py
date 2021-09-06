@@ -1,13 +1,6 @@
 import random
 from dataclasses import dataclass, field
-
-from DataReader import DataReader
 from Personaje import Personaje
-from clases.Arquero import Arquero
-from clases.Clase import Clase
-from clases.Defensor import Defensor
-from clases.Guerrero import Guerrero
-from clases.Infiltrado import Infiltrado
 
 
 @dataclass
@@ -15,6 +8,7 @@ class Population:
     pop: list[Personaje] = field(default_factory=list, init=False)
     size: int = field()
     total_fitness = 0
+    total_pseudo_fitness = 0
 
     def calc_fitness(self):
         for p in self.pop:
@@ -43,6 +37,11 @@ class Population:
         self.total_fitness = 0
         for p in self.pop:
             self.total_fitness += p.fitness
+
+    def calc_total_pseudo_fitness(self):
+        self.total_pseudo_fitness = 0
+        for p in self.pop:
+            self.total_pseudo_fitness += p.pseudo_fitness
 
     @classmethod
     def generate_random(cls, player_class, size: int, total_weapons: int, total_boots: int, total_helmet: int, total_gloves: int, total_chestplates: int):
