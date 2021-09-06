@@ -200,13 +200,13 @@ class Crossover:
             pop.append(pop[0])
 
         for i in range(0, len(pop), 2):
-            dice = random.uniform(0, 1)
-            swap = dice > 0.5
             parent1 = pop[i]
             parent2 = pop[i + 1]
             child1_genes = []
             child2_genes = []
             for x in range(0, Genetic.GENOTYPE_LENGTH):
+                dice = random.uniform(0, 1)
+                swap = dice > 0.5
                 if x == 0:
                     if swap:
                         child1_genes.append(parent2.altura)
