@@ -20,6 +20,7 @@ class Config:
         self.N = parser.getint('genetic_algorithm', 'N')
         self.K = parser.getint('genetic_algorithm', 'K')
         self.genetic_implementation = parser.get('genetic_algorithm', 'IMPLEMENTATION')
+        self.pClass = parser.get('genetic_algorithm', 'CLASS')
 
         self.A = parser.getfloat('selection', 'A')
         self.B = parser.getfloat('selection', 'B')

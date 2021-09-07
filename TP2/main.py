@@ -42,6 +42,6 @@ if __name__ == '__main__':
     DataReader.init_reader_with_pandas(Config.config.data_dir, Config.config.total_weapons, Config.config.total_boots,
                                        Config.config.total_helmets, Config.config.total_gloves,
                                        Config.config.total_chestplates)
-    Genetic.genetic_algorithm('Archer')
+    Genetic.genetic_algorithm(Config.config.pClass)
 
     input(' --- Press Enter to EXIT --- ')
