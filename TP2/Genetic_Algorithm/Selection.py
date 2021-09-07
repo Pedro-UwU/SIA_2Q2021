@@ -46,8 +46,8 @@ class Selection:
     @staticmethod
     def universal(pop: Population, k: int):
         new_pop = Population(k)
+        rnd = random.uniform(0, 1)
         for i in range(k):
-            rnd = random.uniform(0, 1)
             r = (rnd + i)/k
             p = Selection._select_from_roullete(pop, r)
             new_pop.pop.append(p)
