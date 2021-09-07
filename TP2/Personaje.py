@@ -127,4 +127,5 @@ class Personaje:
     def clone(self):
         new_p = Personaje(self.clase, self.altura, self.equipment[0], self.equipment[1], self.equipment[2], self.equipment[3], self.equipment[4])
         new_p.fitness = self.fitness
+        new_p.pseudo_fitness = self.pseudo_fitness
         return new_p

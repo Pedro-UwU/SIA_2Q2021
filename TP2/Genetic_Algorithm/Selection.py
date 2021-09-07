@@ -3,12 +3,10 @@ import math
 import os
 import random
 
-from dataclasses import dataclass, field
-from time import time
+from dataclasses import dataclass
 
 from Config import Config
 from Genetic_Algorithm.Population import Population
-from Selection_Algorithm import Elite, Roulette
 
 
 @dataclass(frozen=False)
@@ -17,30 +15,6 @@ class Selection:
     selection_method_2 = None
     selection_method_3 = None
     selection_method_4 = None
-    # def fill_all(self, population: Population, kids: Population):
-    #     selected_population_method_3 = self.method_3.select_individuals(population, self.constant_B * self.constant_K)
-    #     selected_population_method_4 = self.method_4.select_individuals(population,
-    #                                                                     (1 - self.constant_B) * self.constant_K)
-    #
-    #     selected_kids_method_3 = self.method_3.select_individuals(kids, self.constant_B * self.constant_K)
-    #     selected_kids_method_4 = self.method_4.select_individuals(kids, (1 - self.constant_B) * self.constant_K)
-    #
-    #     selected_population = selected_population_method_3 + selected_population_method_4
-    #     selected_kids = selected_kids_method_3 + selected_kids_method_4
-    #
-    #     return selected_population + selected_kids
-    #
-    # def fill_parent(self, population: Population, kids: Population):
-    #     if kids.count() > population.count():
-    #         selected_kids_method_3 = self.method_3.select_individuals(kids, self.constant_B * self.constant_K)
-    #         selected_kids_method_4 = self.method_4.select_individuals(kids, (1 - self.constant_B) * self.constant_K)
-    #         return selected_kids_method_3 + selected_kids_method_4
-    #
-    #     amount_missing = self.constant_K - kids.count()
-    #     selected_population_method_3 = self.method_3.select_individuals(population, amount_missing * self.constant_B)
-    #     selected_population_method_4 = self.method_4.select_individuals(population,
-    #                                                                     amount_missing * (1 - self.constant_B))
-    #     return kids + selected_population_method_3 + selected_population_method_4
 
     @staticmethod
     def load_selection_methods():
@@ -73,7 +47,7 @@ class Selection:
     def universal(pop: Population, k: int):
         new_pop = Population(k)
         for i in range(k):
-            rnd = random.uniform(0,1)
+            rnd = random.uniform(0, 1)
             r = (rnd + i)/k
             p = Selection._select_from_roullete(pop, r)
             new_pop.pop.append(p)

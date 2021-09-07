@@ -46,6 +46,10 @@ class Config:
         self.fitness_percentage_without_change = parser.getfloat('stop', 'FITNESS_PERCENTAGE_WITHOUT_CHANGE')
 
         self.real_time_graph = parser.getboolean('visualization', 'REAL_TIME_GRAPH')
+
+        self.crossover = parser.get('crossover', 'CROSSOVER_METHOD')
+        self.crossover_prob = parser.getfloat('crossover', 'CROSSOVER_PROBABILITY')
+
     @staticmethod
     def init_config(config_name: str):
         Config.config = Config(config_name)

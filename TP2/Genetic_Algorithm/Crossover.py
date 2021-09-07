@@ -1,11 +1,15 @@
 import random
 
+from Config import Config
 from Genetic_Algorithm import Genetic
 from Genetic_Algorithm.Population import Population
 from Personaje import Personaje
 
 
 class Crossover:
+
+    crossPopulations = None
+
     @staticmethod
     def pointCross(parents: Population):
         pop = random.sample(parents.pop, parents.size)
@@ -17,6 +21,14 @@ class Crossover:
             odd = True
 
         for i in range(0, len(pop), 2):
+            combination = random.uniform(0, 1)
+            if combination > Config.config.crossover_prob:
+                child1 = pop[i].clone()
+                child2 = pop[i+1].clone()
+                new_pop.pop.append(child1)
+                new_pop.pop.append(child2)
+                continue
+
             locus = random.randint(0, Genetic.GENOTYPE_LENGTH)
             parent1 = pop[i]
             parent2 = pop[i + 1]
@@ -52,11 +64,19 @@ class Crossover:
     def doubleCross(parents: Population):
         pop = random.sample(parents.pop, parents.size)
         new_pop = Population(parents.size)
+        odd = False
         # Si la poblacion es impar, le agrega el primero de nuevo
         if len(pop) % 2 == 1:
             pop.append(pop[0])
-
+            odd = True
         for i in range(0, len(pop), 2):
+            combination = random.uniform(0, 1)
+            if combination > Config.config.crossover_prob:
+                child1 = pop[i].clone()
+                child2 = pop[i + 1].clone()
+                new_pop.pop.append(child1)
+                new_pop.pop.append(child2)
+                continue
             locus1 = random.randint(0, Genetic.GENOTYPE_LENGTH - 1)
             locus2 = random.randint(0, Genetic.GENOTYPE_LENGTH)
             while locus2 <= locus1:
@@ -94,17 +114,28 @@ class Crossover:
             new_pop.pop.append(child1)
             new_pop.pop.append(child2)
 
+        if odd:
+            new_pop.pop.pop()
         return new_pop
 
     @staticmethod
     def anularCross(parents: Population):
         pop = random.sample(parents.pop, parents.size)
         new_pop = Population(parents.size)
+        odd = False
         # Si la poblacion es impar, le agrega el primero de nuevo
         if len(pop) % 2 == 1:
             pop.append(pop[0])
+            odd = True
 
         for i in range(0, len(pop), 2):
+            combination = random.uniform(0, 1)
+            if combination > Config.config.crossover_prob:
+                child1 = pop[i].clone()
+                child2 = pop[i + 1].clone()
+                new_pop.pop.append(child1)
+                new_pop.pop.append(child2)
+                continue
             locus = random.randint(0, Genetic.GENOTYPE_LENGTH - 1)
             length = random.randint(0, Genetic.GENOTYPE_LENGTH / 2)
             parent1 = pop[i]
@@ -178,9 +209,9 @@ class Crossover:
                     child1_genes.append(parent1.equipment[x - 1])
                     child2_genes.append(parent2.equipment[x - 1])
 
-            print(f'locus: {locus}, length: {length}')
-            print(f'child1_genes: {child1_genes}')
-            print(f'child2_genes: {child2_genes}')
+            # print(f'locus: {locus}, length: {length}')
+            # print(f'child1_genes: {child1_genes}')
+            # print(f'child2_genes: {child2_genes}')
 
             child1 = Personaje(parent1.clase, child1_genes[0], child1_genes[1], child1_genes[2], child1_genes[3],
                                child1_genes[4], child1_genes[5])
@@ -189,17 +220,28 @@ class Crossover:
             new_pop.pop.append(child1)
             new_pop.pop.append(child2)
 
+        if odd:
+            new_pop.pop.pop()
         return new_pop
 
     @staticmethod
     def uniformCross(parents: Population):
         pop = random.sample(parents.pop, parents.size)
         new_pop = Population(parents.size)
+        odd = False
         # Si la poblacion es impar, le agrega el primero de nuevo
         if len(pop) % 2 == 1:
             pop.append(pop[0])
+            odd = True
 
         for i in range(0, len(pop), 2):
+            combination = random.uniform(0, 1)
+            if combination > Config.config.crossover_prob:
+                child1 = pop[i].clone()
+                child2 = pop[i + 1].clone()
+                new_pop.pop.append(child1)
+                new_pop.pop.append(child2)
+                continue
             parent1 = pop[i]
             parent2 = pop[i + 1]
             child1_genes = []
@@ -229,5 +271,17 @@ class Crossover:
             new_pop.pop.append(child1)
             new_pop.pop.append(child2)
 
+        if odd:
+            new_pop.pop.pop()
         return new_pop
 
+    @staticmethod
+    def load_crossover_method():
+        Crossover.crossPopulations = Crossover._methods[Config.config.crossover]
+
+    _methods = {
+        'POINT': pointCross,
+        'DOUBLE': doubleCross,
+        'ANULAR': anularCross,
+        'UNIFORM': uniformCross
+    }
