@@ -36,6 +36,7 @@ class SimplePerceptron:
             if new_error < error_min:
                 error_min = new_error
             current_steps += 1
+            # print(f'Weights: {SimplePerceptron.weights}')
             print(f'Current step: {current_steps}, with new_error: {new_error}')
 
         SimplePerceptron.predict()
@@ -47,7 +48,6 @@ class SimplePerceptron:
             excitement = SimplePerceptron.calculate_excitement(index)
             activation = SimplePerceptron.calculate_activation(excitement)
             result.append(activation)
-
             print(f'Expected Value: {SimplePerceptron.expected_output[index]}, Obtained Value: {activation}')
 
     @staticmethod
@@ -64,7 +64,7 @@ class SimplePerceptron:
     def update_weights(index, activation):
         delta_w = SimplePerceptron.calculate_delta_weight(index, activation)
         new_weights = []
-        for i in range(2):
+        for i in range(3):
             new_weights.append(SimplePerceptron.weights[i] + delta_w[i])
 
         SimplePerceptron.weights = new_weights
@@ -73,8 +73,12 @@ class SimplePerceptron:
     def calculate_delta_weight(index, activation):
         output_aux = SimplePerceptron.expected_output[index] - activation
         delta_w = []
-        for i in SimplePerceptron.values[index]:
-            delta_w.append(0.01 * i * output_aux)
+        for i in range(len(SimplePerceptron.weights)):
+            if i == 0:
+                delta_w.append(0.01 * output_aux)
+            else:
+                value = SimplePerceptron.values[index][i-1]
+                delta_w.append(0.01 * value * output_aux)
 
         return delta_w
 
