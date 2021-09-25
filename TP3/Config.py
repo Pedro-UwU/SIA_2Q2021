@@ -20,6 +20,9 @@ class Config:
         self.is_linear = parser.get('ej2', 'IS_LINEAR')
         self.function = parser.get('ej2', 'FUNCTION')
 
+        self.hidden_layers_ej3_1 = parser.getint('ej3_1', 'HIDDEN_LAYERS')
+        self.nodes_per_layer_ej3_1 = parser.get('ej3_1', 'NODES_PER_LAYER')
+
     @staticmethod
     def init_config(config_name: str):
         Config.config = Config(config_name)

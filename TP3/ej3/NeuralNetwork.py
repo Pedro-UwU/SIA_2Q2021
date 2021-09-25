@@ -1,8 +1,10 @@
 import numpy as np
 import json
 
+
 class NeuralNetwork:
-    def __init__(self, layers: int, nodes_per_layer: list[int], activation_function, activation_derivative, learning_rate, init_random=True):
+    def __init__(self, layers: int, nodes_per_layer: list[int], activation_function, activation_derivative,
+                 learning_rate, init_random=True):
         self.layers = layers
         self.nodes_per_layer = nodes_per_layer.copy()
         self.weights: list[np.ndarray] = []
@@ -11,8 +13,9 @@ class NeuralNetwork:
         self.lr = learning_rate
 
         if init_random:
-            for i in range(layers-1):
-                w = (np.random.rand(self.nodes_per_layer[i+1], self.nodes_per_layer[i]+1) - 0.5) * 2 # El +1 es para el bias node
+            for i in range(layers - 1):
+                w = (np.random.rand(self.nodes_per_layer[i + 1],
+                                    self.nodes_per_layer[i] + 1) - 0.5) * 2  # El +1 es para el bias node
                 self.weights.append(w)
 
     def query(self, input_array: list[float]):
@@ -34,18 +37,19 @@ class NeuralNetwork:
         error = np.subtract(trg, values[-1])
         error_value = 0.5 * np.sum(error, axis=0) ** 2
         d = self.derivative(h[-1]) * error
-        delta[self.layers-1] = d
+        delta[self.layers - 1] = d
 
-        for i in range(self.layers - 2, 0, -1): # desde el ultimo al primero
-            d = delta[i+1]
+        for i in range(self.layers - 2, 0, -1):  # desde el ultimo al primero
+            d = delta[i + 1]
             h_ = h[i]
-            aux_weight = np.delete(self.weights[i].T, self.nodes_per_layer[i], axis=0) # Le saco la ultima fila de W para no calcular el delta del bias
+            aux_weight = np.delete(self.weights[i].T, self.nodes_per_layer[i],
+                                   axis=0)  # Le saco la ultima fila de W para no calcular el delta del bias
             tmp1 = np.dot(aux_weight, d)
             tmp2 = self.derivative(h_)
             delta[i] = tmp1 * tmp2
 
         for i in range(self.layers - 1):
-            delta_w = self.lr * np.dot(delta[i+1], values[i].T)
+            delta_w = self.lr * np.dot(delta[i + 1], values[i].T)
             self.weights[i] = self.weights[i] + delta_w
 
         return error_value
@@ -85,9 +89,10 @@ class NeuralNetwork:
     def loadNN(cls, file_name, activation_function, derivative_activation):
         with open(file_name, 'r') as file:
             decoded = json.loads(file.read())
-            aux = NeuralNetwork(decoded['total_layers'], decoded['nodes_per_layer'], activation_function, derivative_activation, decoded['learning_rate'], init_random=False)
+            aux = NeuralNetwork(decoded['total_layers'], decoded['nodes_per_layer'], activation_function,
+                                derivative_activation, decoded['learning_rate'], init_random=False)
             for i in range(decoded['total_layers'] - 1):
-                w = np.array(decoded['weights'][i]).reshape((aux.nodes_per_layer[i+1], aux.nodes_per_layer[i]+1))
+                w = np.array(decoded['weights'][i]).reshape((aux.nodes_per_layer[i + 1], aux.nodes_per_layer[i] + 1))
                 aux.weights.append(w)
             return aux
 
@@ -106,3 +111,11 @@ class NeuralNetwork:
     @staticmethod
     def tanh_der(x):
         return 1 - (np.tanh(x)) ** 2
+
+    @staticmethod
+    def sign(x):
+        return (x > 0) * 1
+
+    @staticmethod
+    def sign_der(x):
+        return 0
