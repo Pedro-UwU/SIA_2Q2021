@@ -20,13 +20,14 @@ def ej3_2():
 
     testing_division = Config.config.testing_division_ej3_2
 
-    nn = NeuralNetwork(total_layers, nodes_per_layer, NeuralNetwork.sigmoid, NeuralNetwork.sigmoid_der,
-                       Config.config.learning_rate_ej3_2)
+
 
     training_values = []
     testing_values = []
 
-    for repetition in range(1):
+    for repetition in range(50):
+        nn = NeuralNetwork(total_layers, nodes_per_layer, NeuralNetwork.sigmoid, NeuralNetwork.sigmoid_der,
+                           Config.config.learning_rate_ej3_2)
         training_acc = []
         testing_acc = []
         for epoch in range(epochs):
