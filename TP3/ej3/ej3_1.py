@@ -49,3 +49,4 @@ if __name__ == '__main__':
     config_path = os.path.join(dirname, '../config.conf')
     Cf.init_config(config_path)
     ej1_1()
+    exit(0)

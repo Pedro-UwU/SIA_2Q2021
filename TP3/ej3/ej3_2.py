@@ -25,7 +25,7 @@ def ej3_2():
     training_values = []
     testing_values = []
 
-    for repetition in range(50):
+    for repetition in range(25):
         nn = NeuralNetwork(total_layers, nodes_per_layer, NeuralNetwork.sigmoid, NeuralNetwork.sigmoid_der,
                            Config.config.learning_rate_ej3_2)
         training_acc = []
@@ -86,17 +86,17 @@ def test(nn, output_layers, test_set):
     fn = confusion[0][1]  # es par pero cree que es impar
     acc = (tp + tn) / (tp + tn + fp + fn)
     if (tp + fp) == 0:
-        pres = math.inf
+        pres = 0
     else:
         pres = tp / (tp + fp)
 
     if tp + fn == 0:
-        recall = math.inf
+        recall = 0
     else:
         recall = tp / (tp + fn)
 
     if (pres + recall) == 0:
-        f1 = math.inf
+        f1 = 0
     else:
         f1 = 2 * pres * recall / (pres + recall)
     return acc, pres, recall, f1
