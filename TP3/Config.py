@@ -23,6 +23,12 @@ class Config:
         self.hidden_layers_ej3_1 = parser.getint('ej3_1', 'HIDDEN_LAYERS')
         self.nodes_per_layer_ej3_1 = parser.get('ej3_1', 'NODES_PER_LAYER')
 
+        self.hidden_layers_ej3_2 = parser.getint('ej3_2', 'HIDDEN_LAYERS')
+        self.nodes_per_layer_ej3_2 = parser.get('ej3_2', 'NODES_PER_LAYER')
+        self.epochs_ej3_2 = parser.getint('ej3_2', 'EPOCHS')
+        self.testing_division_ej3_2 = parser.getint('ej3_2', 'TESTING_DIVISION')
+        self.learning_rate_ej3_2 = parser.getfloat('ej3_2', 'LEARNING_RATE')
+
     @staticmethod
     def init_config(config_name: str):
         Config.config = Config(config_name)
