@@ -28,6 +28,26 @@ class Config:
         self.epochs_ej3_2 = parser.getint('ej3_2', 'EPOCHS')
         self.testing_division_ej3_2 = parser.getint('ej3_2', 'TESTING_DIVISION')
         self.learning_rate_ej3_2 = parser.getfloat('ej3_2', 'LEARNING_RATE')
+        self.momentum_ej3_2 = parser.getboolean('ej3_2', 'MOMENTUM')
+        self.alpha_ej3_2 = parser.getfloat('ej3_2', 'ALPHA_MOMENTUM')
+        self.total_nn_ej3_2 = parser.getint('ej3_2', 'TOTAL_NN')
+        self.graph_choice_ej3_2 = parser.get('ej3_2', 'GRAPH')
+        self.dynamic_lr_ej3_2 = parser.getboolean('ej3_2', 'DYNAMIC_LEARNING_RATE')
+        self.a_ej3_2 = parser.getfloat('ej3_2', 'A')
+        self.b_ej3_2 = parser.getfloat('ej3_2', 'B')
+
+        self.hidden_layers_ej3_3 = parser.getint('ej3_3', 'HIDDEN_LAYERS')
+        self.nodes_per_layer_ej3_3 = parser.get('ej3_3', 'NODES_PER_LAYER')
+        self.epochs_ej3_3 = parser.getint('ej3_3', 'EPOCHS')
+        self.testing_division_ej3_3 = parser.getint('ej3_3', 'TESTING_DIVISION')
+        self.learning_rate_ej3_3 = parser.getfloat('ej3_3', 'LEARNING_RATE')
+        self.momentum_ej3_3 = parser.getboolean('ej3_3', 'MOMENTUM')
+        self.alpha_ej3_3 = parser.getfloat('ej3_3', 'ALPHA_MOMENTUM')
+        self.total_nn_ej3_3 = parser.getint('ej3_3', 'TOTAL_NN')
+        self.graph_choice_ej3_3 = parser.get('ej3_3', 'GRAPH')
+        self.dynamic_lr_ej3_3 = parser.getboolean('ej3_3', 'DYNAMIC_LEARNING_RATE')
+        self.a_ej3_3 = parser.getfloat('ej3_3', 'A')
+        self.b_ej3_3 = parser.getfloat('ej3_3', 'B')
 
     @staticmethod
     def init_config(config_name: str):
