@@ -21,9 +21,13 @@ class Graph:
                 class_two_x.append(entries[i][0])
                 class_two_y.append(entries[i][1])
 
-        plt.plot(class_one_x, class_one_y, 'ro')
-        plt.plot(class_two_x, class_two_y, 'go')
-        plt.plot(x, -((weights[2] + weights[0] * x) / weights[1]), '-b', label='Hiperplano')
+        plt.xlabel("X")
+        plt.ylabel("Y")
+        plt.title(Config.config.operation_ej1)
+
+        plt.plot(x, -((weights[0] + weights[1] * x) / weights[2]), '-b', label='Hiperplano')
+        plt.plot(class_one_x, class_one_y, 'ro', label='Proyeccion > 0')
+        plt.plot(class_two_x, class_two_y, 'go', label='Proyeccion < 0')
         plt.legend(loc='best')
         plt.show()
 

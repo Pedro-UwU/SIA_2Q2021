@@ -2,6 +2,7 @@ import random
 
 from Config import Config
 from ej2.Graph import Graph
+import numpy as np
 
 
 class SimplePerceptron:
@@ -16,7 +17,7 @@ class SimplePerceptron:
     def initialize():
         SimplePerceptron.steps = Config.config.steps_ej1
         SimplePerceptron.size = len(SimplePerceptron.values)
-        SimplePerceptron.weights = [0, 0, 0]
+        SimplePerceptron.weights = np.random.rand(3, 1)
         SimplePerceptron.learning_rate = float(Config.config.learning_rate_ej1)
         if Config.config.operation_ej1 == "XOR":
             SimplePerceptron.expected_output = [-1, -1, -1, 1]
