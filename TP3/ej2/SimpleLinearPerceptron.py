@@ -4,6 +4,7 @@ import random
 import numpy as np
 
 from Config import Config
+from ej2.Graph import Graph
 
 
 class SimpleLinearPerceptron:
@@ -18,7 +19,7 @@ class SimpleLinearPerceptron:
 
     @staticmethod
     def initialize():
-        SimpleLinearPerceptron.steps = Config.config.steps_ej1
+        SimpleLinearPerceptron.steps = Config.config.steps_ej2
         SimpleLinearPerceptron.weights = [0, 0, 0, 0]
         SimpleLinearPerceptron.learning_rate = float(Config.config.learning_rate_ej1)
         if Config.config.error_method == "normal":
@@ -42,48 +43,60 @@ class SimpleLinearPerceptron:
     @staticmethod
     def run():
         current_steps = 0
+        training_errors = []
+        test_errors = []
         error = 1
         error_min = 2 * len(SimpleLinearPerceptron.training_values)
         while abs(error) > 0 and current_steps < SimpleLinearPerceptron.steps:
-            index = random.randrange(0, len(SimpleLinearPerceptron.training_values))
-            activation = SimpleLinearPerceptron.calculate_excitement(1, index)
-            SimpleLinearPerceptron.update_weights(index, activation)
-            new_error = SimpleLinearPerceptron.error_method()
+            step_error = 0.0
+            for index in range(len(SimpleLinearPerceptron.training_values)):
+                # index = random.randrange(0, len(SimpleLinearPerceptron.training_values))
+                activation = SimpleLinearPerceptron.calculate_excitement(1, index)
+
+                diff = SimpleLinearPerceptron.training_expected_output[index] - activation
+                SimpleLinearPerceptron.update_weights(index, diff)
+
+                step_error += SimpleLinearPerceptron.error_method(diff)
+
+            new_error = (0.5 * step_error) / len(SimpleLinearPerceptron.training_values)
+            training_errors.append(new_error)
             if new_error < error_min:
                 error_min = new_error
             current_steps += 1
-            # print(f'Weights: {SimpleLinearPerceptron.weights}')
             print(f'Current step: {current_steps}, with new_error: {new_error}')
 
-        SimpleLinearPerceptron.predict()
+            [results, prediction_error] = SimpleLinearPerceptron.predict()
+            prediction_error = (0.5 * prediction_error) / len(SimpleLinearPerceptron.predicting_values)
+            test_errors.append(prediction_error)
+
+        Graph.graph_ej2(training_errors, test_errors)
 
     @staticmethod
     def predict():
         result = []
+        prediction_error = 0.0
         for index in range(len(SimpleLinearPerceptron.predicting_values)):
             activation = SimpleLinearPerceptron.calculate_excitement(0, index)
+
+            diff = SimpleLinearPerceptron.predicting_expected_output[index] - activation
+            prediction_error += SimpleLinearPerceptron.error_method(diff)
             result.append(activation)
             print(f'Expected Value: {SimpleLinearPerceptron.predicting_expected_output[index]}, Obtained Value: {activation}')
 
-    @staticmethod
-    def calculate_error_normal():
-        total_error = 0
-        for index in range(len(SimpleLinearPerceptron.training_values)):
-            activation = SimpleLinearPerceptron.calculate_excitement(1, index)
-            total_error += abs(SimpleLinearPerceptron.training_expected_output[index] - activation)
-        return total_error
+        return [result, prediction_error]
 
     @staticmethod
-    def calculate_error_quadratic():
-        total_error = 0
-        for index in range(len(SimpleLinearPerceptron.training_values)):
-            activation = SimpleLinearPerceptron.calculate_excitement(1, index)
-            total_error += pow(SimpleLinearPerceptron.training_expected_output[index] - activation, 2) * 0.5
-        return total_error
+    def calculate_error_normal(error):
+        return 0.5 * error
 
     @staticmethod
-    def update_weights(index, activation):
-        delta_w = SimpleLinearPerceptron.calculate_delta_weight(index, activation)
+    def calculate_error_quadratic(error):
+        return 0.5 * pow(error, 2)
+
+    @staticmethod
+    def update_weights(index, diff_error):
+        values = SimpleLinearPerceptron.training_values[index]
+        delta_w = SimpleLinearPerceptron.calculate_delta_weight(values, diff_error)
         new_weights = []
         for i in range(4):
             new_weights.append(SimpleLinearPerceptron.weights[i] + delta_w[i])
@@ -91,15 +104,13 @@ class SimpleLinearPerceptron:
         SimpleLinearPerceptron.weights = new_weights
 
     @staticmethod
-    def calculate_delta_weight(index, activation):
-        output_aux = SimpleLinearPerceptron.training_expected_output[index] - activation
+    def calculate_delta_weight(values, diff_error):
         delta_w = []
         for i in range(len(SimpleLinearPerceptron.weights)):
             if i == 0:
-                delta_w.append(SimpleLinearPerceptron.learning_rate * output_aux)
+                delta_w.append(SimpleLinearPerceptron.learning_rate * diff_error)
             else:
-                value = SimpleLinearPerceptron.training_values[index][i - 1]
-                delta_w.append(SimpleLinearPerceptron.learning_rate * value * output_aux)
+                delta_w.append(SimpleLinearPerceptron.learning_rate * values[i - 1] * diff_error)
 
         return delta_w
 

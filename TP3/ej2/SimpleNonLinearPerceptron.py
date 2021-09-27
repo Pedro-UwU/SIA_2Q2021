@@ -23,7 +23,7 @@ class SimpleNonLinearPerceptron:
 
     @staticmethod
     def initialize():
-        SimpleNonLinearPerceptron.steps = Config.config.steps_ej1
+        SimpleNonLinearPerceptron.steps = Config.config.steps_ej2
         SimpleNonLinearPerceptron.weights = [0, 0, 0, 0]
         SimpleNonLinearPerceptron.learning_rate = float(Config.config.learning_rate_ej1)
         SimpleNonLinearPerceptron.betha = Config.config.betha
@@ -48,8 +48,8 @@ class SimpleNonLinearPerceptron:
             SimpleNonLinearPerceptron.predicting_expected_output = values['expected_output'][
                                                                 Config.config.training_amount:]
 
-        SimpleNonLinearPerceptron.minValue = min(np.array(values['values']).flatten())
-        SimpleNonLinearPerceptron.maxValue = max(np.array(values['values']).flatten())
+        SimpleNonLinearPerceptron.minValue = min(np.array(values['expected_output']).flatten())
+        SimpleNonLinearPerceptron.maxValue = max(np.array(values['expected_output']).flatten())
 
     @staticmethod
     def run():
@@ -65,8 +65,9 @@ class SimpleNonLinearPerceptron:
                 excitement = SimpleNonLinearPerceptron.calculate_excitement(1, index)
                 activation = SimpleNonLinearPerceptron.g_function(excitement)
 
-                diff = SimpleNonLinearPerceptron.training_expected_output[index] - activation
-                step_error += SimpleNonLinearPerceptron.calculate_error_quadratic(diff)
+                normalized_output = SimpleNonLinearPerceptron.normalize_value(SimpleNonLinearPerceptron.training_expected_output[index])
+                diff = normalized_output - activation
+                step_error += SimpleNonLinearPerceptron.calculate_error_quadratic(SimpleNonLinearPerceptron.denormalize_value(diff))
 
                 SimpleNonLinearPerceptron.update_weights(index, excitement, diff)
 
@@ -76,27 +77,31 @@ class SimpleNonLinearPerceptron:
                 error_min = new_error
             current_steps += 1
             # print(f'Weights: {SimpleNonLinearPerceptron.weights}')
-            print(f'Current step: {current_steps}, with new_error: {new_error}')
+            # print(f'Current step: {current_steps}, with new_error: {new_error}')
 
-            [results, error] = SimpleNonLinearPerceptron.predict()
-            test_errors.append(error)
+            [results, error] = SimpleNonLinearPerceptron.predict(current_steps)
+            test_error = (0.5 * error) / len(SimpleNonLinearPerceptron.predicting_values)
+            test_errors.append(test_error)
 
-        # Graph.graph_ej2(training_errors, test_errors)
+        Graph.graph_ej2(training_errors, test_errors)
 
     @staticmethod
-    def predict():
+    def predict(current_steps):
         result = []
         error = 0.0
+        if current_steps > 490:
+            i = 2
         for index in range(len(SimpleNonLinearPerceptron.predicting_values)):
             excitement = SimpleNonLinearPerceptron.calculate_excitement(0, index)
             activation = SimpleNonLinearPerceptron.g_function(excitement)
 
-            normalized_activation = SimpleNonLinearPerceptron.normalize_value(activation)
-            diff = SimpleNonLinearPerceptron.training_expected_output[index] - normalized_activation
+            normalized_output = SimpleNonLinearPerceptron.normalize_value(SimpleNonLinearPerceptron.predicting_expected_output[index])
+            diff = normalized_output - activation
             error += SimpleNonLinearPerceptron.calculate_error_quadratic(SimpleNonLinearPerceptron.denormalize_value(diff))
 
-            result.append(activation)
-            # print(f'Expected Value: {SimpleNonLinearPerceptron.predicting_expected_output[index]}, Obtained Value: {activation}')
+            prediction = SimpleNonLinearPerceptron.denormalize_value(activation)
+            result.append(prediction)
+            print(f'Expected Value: {SimpleNonLinearPerceptron.predicting_expected_output[index]}, Obtained Value: {prediction}')
 
         return [result, error]
 

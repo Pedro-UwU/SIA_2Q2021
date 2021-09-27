@@ -2,6 +2,9 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
+from Config import Config
+
+
 class Graph:
     @staticmethod
     def graph_ej1(weights, entries, output):
@@ -21,6 +24,7 @@ class Graph:
         plt.plot(class_one_x, class_one_y, 'ro')
         plt.plot(class_two_x, class_two_y, 'go')
         plt.plot(x, -((weights[2] + weights[0] * x) / weights[1]), '-b', label='Hiperplano')
+        plt.legend(loc='best')
         plt.show()
 
         return
@@ -32,7 +36,11 @@ class Graph:
         plt.ylabel("Error")
         iterations = len(test_error_data)
         first = training_error_data[0]/4
-        title = ("Non Linear")
+        if Config.config.is_linear == 'True':
+            title = ("Linear")
+        else:
+            title = ("Non Linear")
+
         plt.title(title)
         plt.grid(True)
         plt.plot(range(0, len(training_error_data)), training_error_data, 'g-', label="Training Error")

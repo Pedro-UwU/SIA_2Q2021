@@ -28,7 +28,7 @@ class SimplePerceptron:
         current_steps = 0
         error = 1
         error_min = 2 * SimplePerceptron.size
-        while abs(error) > 0 and current_steps < SimplePerceptron.steps:
+        while abs(error_min) > 0 and current_steps < SimplePerceptron.steps:
             index = random.randrange(0, SimplePerceptron.size)
             excitement = SimplePerceptron.calculate_excitement(index)
             activation = SimplePerceptron.calculate_activation(excitement)

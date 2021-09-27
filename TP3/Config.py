@@ -19,6 +19,7 @@ class Config:
         self.learning_rate_ej2 = parser.get('ej2', 'LEARNING_RATE')
         self.error_method = parser.get('ej2', 'ERROR_FUNCTION')
         self.training_amount = parser.get('ej2', 'TRAINING_AMOUNT')
+        if self.training_amount != '': self.training_amount = int(self.training_amount)
         self.betha = parser.getfloat('ej2', 'BETHA')
         self.is_linear = parser.get('ej2', 'IS_LINEAR')
         self.function = parser.get('ej2', 'FUNCTION')
