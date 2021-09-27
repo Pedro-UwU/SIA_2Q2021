@@ -48,6 +48,9 @@ class Config:
         self.dynamic_lr_ej3_3 = parser.getboolean('ej3_3', 'DYNAMIC_LEARNING_RATE')
         self.a_ej3_3 = parser.getfloat('ej3_3', 'A')
         self.b_ej3_3 = parser.getfloat('ej3_3', 'B')
+        self.graph_plot_ej3_3 = parser.get('ej3_3', 'GRAPH_PLOT')
+        self.noise_ej3_3 = parser.getboolean('ej3_3', 'TEST_NOISE')
+        self.noise_prob_ej3_3 = parser.getfloat('ej3_3', 'NOISE_PROBABILITY')
 
     @staticmethod
     def init_config(config_name: str):
