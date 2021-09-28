@@ -1,5 +1,5 @@
 def get_numbers():
-    file = open('./numeros.txt', 'r')
+    file = open('ej3/numeros.txt', 'r')
     lines = file.readlines()
     file.close()
     numbers = []

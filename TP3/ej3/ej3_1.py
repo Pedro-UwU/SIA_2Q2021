@@ -4,11 +4,12 @@ import random
 import numpy as np
 
 from Config import Config as Cf
-from NeuralNetwork import NeuralNetwork
 import matplotlib.pyplot as plt
 
+from ej3.NeuralNetwork import NeuralNetwork
 
-def ej1_1():
+
+def ej3_1():
     train_set = [[-1, 1], [1, -1], [-1, -1], [1, 1]]
     target_set = [1, 1, -1, -1]
     layers = Cf.config.hidden_layers_ej3_1
@@ -50,4 +51,4 @@ if __name__ == '__main__':
     dirname = os.path.dirname(__file__)
     config_path = os.path.join(dirname, '../config.conf')
     Cf.init_config(config_path)
-    ej1_1()
+    ej3_1()

@@ -25,6 +25,7 @@ def ej3_3():
     noise_values = []
 
     for repetition in range(Config.config.total_nn_ej3_3):
+        print(f'Run: {repetition}')
         nn = NeuralNetwork(total_layers, nodes_per_layer, NeuralNetwork.sigmoid, NeuralNetwork.sigmoid_der,
                            Config.config.learning_rate_ej3_3)
         training_results = []

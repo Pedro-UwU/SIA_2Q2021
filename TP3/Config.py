@@ -9,7 +9,7 @@ class Config:
         parser = configparser.ConfigParser()
         parser.read(config_name)
 
-        self.exercise = parser.getint('config', 'EXERCISE')
+        self.exercise = parser.get('config', 'EXERCISE')
 
         self.operation_ej1 = parser.get('ej1', 'OPERATION')
         self.steps_ej1 = parser.getint('ej1', 'STEPS')
