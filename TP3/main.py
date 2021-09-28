@@ -1,9 +1,10 @@
 import configparser
 import os
 
+from ej3.ej3_2 import ej3_2
 from ej1.SimplePerceptron import SimplePerceptron
-from ej2.SimpleLinearPerceptron import SimpleLinearPerceptron
-from ej2.SimpleNonLinearPerceptron import SimpleNonLinearPerceptron
+# from ej2.SimpleLinearPerceptron import SimpleLinearPerceptron
+# from ej2.SimpleNonLinearPerceptron import SimpleNonLinearPerceptron
 
 from Config import Config
 
