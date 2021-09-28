@@ -42,11 +42,30 @@ class SimpleNonLinearPerceptron:
             SimpleNonLinearPerceptron.training_expected_output = values['expected_output']
             SimpleNonLinearPerceptron.predicting_expected_output = values['expected_output']
         else:
-            SimpleNonLinearPerceptron.training_values = values['values'][:Config.config.training_amount]
-            SimpleNonLinearPerceptron.training_expected_output = values['expected_output'][:Config.config.training_amount]
-            SimpleNonLinearPerceptron.predicting_values = values['values'][Config.config.training_amount:]
-            SimpleNonLinearPerceptron.predicting_expected_output = values['expected_output'][
-                                                                Config.config.training_amount:]
+            training_amount = Config.config.training_amount
+            aux_values = []
+            for index in range(len(values['values'])):
+                aux_values.append([values['values'][index], values['expected_output'][index]])
+            training = random.sample(aux_values, training_amount)
+            testing = []
+            for value in aux_values:
+                if value not in training: testing.append(value)
+
+            training_values = []
+            training_expected_output = []
+            predicting_values = []
+            predicting_expected_output = []
+
+            for value in training:
+                training_values.append(value[0])
+                training_expected_output.append(value[1])
+            for value in testing:
+                predicting_values.append(value[0])
+                predicting_expected_output.append(value[1])
+            SimpleNonLinearPerceptron.training_values = training_values
+            SimpleNonLinearPerceptron.training_expected_output = training_expected_output
+            SimpleNonLinearPerceptron.predicting_values = predicting_values
+            SimpleNonLinearPerceptron.predicting_expected_output = predicting_expected_output
 
         SimpleNonLinearPerceptron.minValue = min(np.array(values['expected_output']).flatten())
         SimpleNonLinearPerceptron.maxValue = max(np.array(values['expected_output']).flatten())

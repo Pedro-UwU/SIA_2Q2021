@@ -20,9 +20,9 @@ class SimplePerceptron:
         SimplePerceptron.weights = np.random.rand(3, 1)
         SimplePerceptron.learning_rate = float(Config.config.learning_rate_ej1)
         if Config.config.operation_ej1 == "XOR":
-            SimplePerceptron.expected_output = [-1, -1, -1, 1]
-        elif Config.config.operation_ej1 == "AND":
             SimplePerceptron.expected_output = [1, 1, -1, -1]
+        elif Config.config.operation_ej1 == "AND":
+            SimplePerceptron.expected_output = [-1, -1, -1, 1]
 
     @staticmethod
     def run():
