@@ -18,5 +18,10 @@ if __name__ == '__main__':
     if Config.config.exercise == 1:
         SimplePerceptron.initialize()
         SimplePerceptron.run()
-    elif Config.config.excercise == 2:
-        pass
+    elif Config.config.exercise == 2:
+        if Config.config.is_linear == "True":
+            SimpleLinearPerceptron.initialize()
+            SimpleLinearPerceptron.run()
+        else:
+            SimpleNonLinearPerceptron.initialize()
+            SimpleNonLinearPerceptron.run()

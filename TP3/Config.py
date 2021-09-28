@@ -13,10 +13,14 @@ class Config:
 
         self.operation_ej1 = parser.get('ej1', 'OPERATION')
         self.steps_ej1 = parser.getint('ej1', 'STEPS')
+        self.learning_rate_ej1 = parser.get('ej1', 'LEARNING_RATE')
 
-        self.operation_ej2 = parser.get('ej2', 'OPERATION')
         self.steps_ej2 = parser.getint('ej2', 'STEPS')
-        self.betha = parser.get('ej2', 'BETHA')
+        self.learning_rate_ej2 = parser.get('ej2', 'LEARNING_RATE')
+        self.error_method = parser.get('ej2', 'ERROR_FUNCTION')
+        self.training_amount = parser.get('ej2', 'TRAINING_AMOUNT')
+        if self.training_amount != '': self.training_amount = int(self.training_amount)
+        self.betha = parser.getfloat('ej2', 'BETHA')
         self.is_linear = parser.get('ej2', 'IS_LINEAR')
         self.function = parser.get('ej2', 'FUNCTION')
 
