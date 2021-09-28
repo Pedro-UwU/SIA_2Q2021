@@ -17,8 +17,8 @@ def ej1_1():
     nodes_per_layer.append(1)
     print(nodes_per_layer)
 
-    nn = NeuralNetwork(layers+2, nodes_per_layer, NeuralNetwork.tanh, NeuralNetwork.tanh_der, 0.1)
-    epochs = 500
+    nn = NeuralNetwork(layers+2, nodes_per_layer, NeuralNetwork.tanh, NeuralNetwork.tanh_der, Cf.config.learning_rate_ej3_1)
+    epochs = Cf.config.epochs_ej3_1
     for i in range(epochs):
         order = [x for x in range(len(train_set))]
         random.shuffle(order)
@@ -40,6 +40,8 @@ def ej1_1():
 
             plt.scatter(x, y, s=50, c=values, cmap='gray')
             plt.title(f'Epoch: {i}')
+            plt.xlabel('x_2')
+            plt.ylabel('x_1')
             plt.gray()
             plt.show()
 
@@ -49,4 +51,3 @@ if __name__ == '__main__':
     config_path = os.path.join(dirname, '../config.conf')
     Cf.init_config(config_path)
     ej1_1()
-    exit(0)

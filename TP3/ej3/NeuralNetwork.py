@@ -50,11 +50,13 @@ class NeuralNetwork:
             delta[i] = tmp1 * tmp2
 
         delta_w = {}
+
         if dynamic_lr and self._last_error is not None:
             if self._last_error - error_value >= 0: # Si antes tenia mas error que ahora
                 self.lr += a
             else:
                 self.lr *= (1-b)
+
         for i in range(self.layers - 1):
             delta_w[i] = self.lr * np.dot(delta[i + 1], values[i].T)
             if previous_delta_w is not None and i in previous_delta_w:

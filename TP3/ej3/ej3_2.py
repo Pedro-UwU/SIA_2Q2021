@@ -24,24 +24,34 @@ def ej3_2():
     training_values = []
     testing_values = []
 
+
+   # random.shuffle(training)
     for repetition in range(Config.config.total_nn_ej3_2):
+        print(repetition)
         nn = NeuralNetwork(total_layers, nodes_per_layer, NeuralNetwork.sigmoid, NeuralNetwork.sigmoid_der,
                            Config.config.learning_rate_ej3_2)
         training_results = []
         testing_results = []
         last_delta = {}
         new_delta = {}
-        for epoch in range(epochs):
-            # veo que seccion de los numeros es testing:
-            # Elijo 4 numeros como test
-            training = numbers.copy()
-            testing = []
+        training = numbers.copy()
+        testing = []
+        if not Config.config.per_epoch_training_ej3_2:
             for i in range(testing_division):
                 aux = random.choice(training)
                 testing.append(aux)
                 training.remove(aux)
+        for epoch in range(epochs):
+            # # veo que seccion de los numeros es testing:
 
-            # entreno la red con esos numeros
+            if Config.config.per_epoch_training_ej3_2:
+                # Elijo 4 numeros como test
+                training = numbers.copy()
+                testing = []
+                for i in range(testing_division):
+                    aux = random.choice(training)
+                    testing.append(aux)
+                    training.remove(aux)
 
             random.shuffle(training)
             for case in training:

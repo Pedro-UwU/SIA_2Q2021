@@ -32,15 +32,23 @@ def ej3_3():
         noise_results = []
         last_delta = {}
         new_delta = {}
-        for epoch in range(epochs):
-            # veo que seccion de los numeros es testing:
-            # Elijo 4 numeros como test
-            training = numbers.copy()
-            testing = []
+        training = numbers.copy()
+        testing = []
+        if not Config.config.per_epoch_training_ej3_3:
             for i in range(testing_division):
                 aux = random.choice(training)
                 testing.append(aux)
                 training.remove(aux)
+        for epoch in range(epochs):
+            # veo que seccion de los numeros es testing:
+            # Elijo 4 numeros como test
+            if Config.config.per_epoch_training_ej3_3:
+                training = numbers.copy()
+                testing = []
+                for i in range(testing_division):
+                    aux = random.choice(training)
+                    testing.append(aux)
+                    training.remove(aux)
 
             # entreno la red con esos numeros
             random.shuffle(training)
@@ -132,6 +140,8 @@ def calculate_avgs(initial_values, total_epochs, index, title: str, plot):
 
 
 def test(nn, output_layers, test_set):
+    if len(test_set) == 0:
+        return [0, 0, 0, 0, 0, 0]
     confusion = np.array([[0 for _ in range(output_layers)] for _ in range(output_layers)])
     for case in test_set:
         result = np.argmax(nn.query(case[1]))

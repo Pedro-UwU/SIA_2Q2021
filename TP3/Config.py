@@ -22,6 +22,8 @@ class Config:
 
         self.hidden_layers_ej3_1 = parser.getint('ej3_1', 'HIDDEN_LAYERS')
         self.nodes_per_layer_ej3_1 = parser.get('ej3_1', 'NODES_PER_LAYER')
+        self.learning_rate_ej3_1 = parser.getfloat('ej3_1', 'LEARNING_RATE')
+        self.epochs_ej3_1 = parser.getint('ej3_1', 'EPOCHS')
 
         self.hidden_layers_ej3_2 = parser.getint('ej3_2', 'HIDDEN_LAYERS')
         self.nodes_per_layer_ej3_2 = parser.get('ej3_2', 'NODES_PER_LAYER')
@@ -35,6 +37,7 @@ class Config:
         self.dynamic_lr_ej3_2 = parser.getboolean('ej3_2', 'DYNAMIC_LEARNING_RATE')
         self.a_ej3_2 = parser.getfloat('ej3_2', 'A')
         self.b_ej3_2 = parser.getfloat('ej3_2', 'B')
+        self.per_epoch_training_ej3_2 = parser.getboolean('ej3_2', 'PER_EPOCH_TRAINING')
 
         self.hidden_layers_ej3_3 = parser.getint('ej3_3', 'HIDDEN_LAYERS')
         self.nodes_per_layer_ej3_3 = parser.get('ej3_3', 'NODES_PER_LAYER')
@@ -51,6 +54,7 @@ class Config:
         self.graph_plot_ej3_3 = parser.get('ej3_3', 'GRAPH_PLOT')
         self.noise_ej3_3 = parser.getboolean('ej3_3', 'TEST_NOISE')
         self.noise_prob_ej3_3 = parser.getfloat('ej3_3', 'NOISE_PROBABILITY')
+        self.per_epoch_training_ej3_3 = parser.getboolean('ej3_3', 'PER_EPOCH_TRAINING')
 
     @staticmethod
     def init_config(config_name: str):
