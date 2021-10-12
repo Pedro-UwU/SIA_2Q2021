@@ -97,7 +97,7 @@ def biplot(data, countries, components, names):
     y = data[:, 1]  # PC1
     plt.scatter(x, y)
     for i, country in enumerate(countries):
-        plt.annotate(country, (x[i], y[i]), size=7)
+        plt.annotate(country, (x[i], y[i]), size=7, color='b')
     print(components)
     scl = 5
     for i, name in enumerate(names):
@@ -107,10 +107,11 @@ def biplot(data, countries, components, names):
         y_coord = components[i-1][1]  # PC1
         print(f'{x_coord=}, {y_coord=}')
         plt.arrow(0, 0, x_coord*scl, y_coord*scl, color='r', alpha=0.5)
-        plt.text(x_coord*scl*1.1, y_coord*scl*1.1, name, color='r')
+        plt.text(x_coord*scl*1.1, y_coord*scl*1.1, name, color='r', size=7)
 
     plt.xlabel("PC0")
     plt.ylabel("PC1")
+    plt.title('Principal Components Analysis')
     plt.grid()
     plt.show()
 
