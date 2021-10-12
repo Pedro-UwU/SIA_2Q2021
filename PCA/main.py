@@ -4,6 +4,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 
+
 def main():
     total_components = 3
     headers, raw_data = read_data('europe.csv')
@@ -13,12 +14,16 @@ def main():
     pca = PCA(n_components=total_components)
     transform = pca.fit_transform(scaled_data)
     components = pca.components_.T
+    correlation = np.corrcoef(scaled_data.T)
 
     write_components(components, headers, total_components)
     write_new_data(countries, transform, total_components)
     write_variance_ratio(pca.explained_variance_ratio_, total_components)
+    write_correlation(correlation, headers)
 
     biplot(transform, countries, components, headers)
+
+    print('a')
 
 
 def read_data(file_name: str):
@@ -92,6 +97,27 @@ def write_variance_ratio(ratio, total_components):
     output_file.write(line2)
     output_file.close()
 
+
+def write_correlation(matrix, headers):
+    output_file = open('correlation.csv', 'w')
+    head = 'Correlation'
+    for i, name in enumerate(headers):
+        if i == 0:
+            continue
+        head += ','
+        head += name
+    head += "\n"
+    output_file.write(head)
+
+    for i, row in enumerate(matrix):
+        line = headers[i + 1]
+        for j in row:
+            line += f',{j}'
+        line += "\n"
+        output_file.write(line)
+    output_file.close()
+
+
 def biplot(data, countries, components, names):
     x = data[:, 0]  # PC0
     y = data[:, 1]  # PC1
@@ -103,17 +129,18 @@ def biplot(data, countries, components, names):
     for i, name in enumerate(names):
         if i == 0:
             continue
-        x_coord = components[i-1][0]  # PC0
-        y_coord = components[i-1][1]  # PC1
+        x_coord = components[i - 1][0]  # PC0
+        y_coord = components[i - 1][1]  # PC1
         print(f'{x_coord=}, {y_coord=}')
-        plt.arrow(0, 0, x_coord*scl, y_coord*scl, color='r', alpha=0.5)
-        plt.text(x_coord*scl*1.1, y_coord*scl*1.1, name, color='r', size=7)
+        plt.arrow(0, 0, x_coord * scl, y_coord * scl, color='r', alpha=0.5)
+        plt.text(x_coord * scl * 1.1, y_coord * scl * 1.1, name, color='r', size=7)
 
     plt.xlabel("PC0")
     plt.ylabel("PC1")
     plt.title('Principal Components Analysis')
     plt.grid()
     plt.show()
+
 
 if __name__ == '__main__':
     main()
