@@ -10,3 +10,5 @@ PCA/components.csv
 PCA/new_data.csv
 
 PCA/variance_ratio.csv
+
+PCA/correlation.csv

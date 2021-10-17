@@ -6,24 +6,28 @@ import matplotlib.pyplot as plt
 
 
 def main():
-    total_components = 3
+    # Setup
+    total_components = 7
     headers, raw_data = read_data('europe.csv')
     countries = raw_data[:, 0]
 
+    # Calculation
     scaled_data = scale_data(raw_data)
     pca = PCA(n_components=total_components)
     transform = pca.fit_transform(scaled_data)
+
+    # Analysis
     components = pca.components_.T
     correlation = np.corrcoef(scaled_data.T)
 
+    # Saving analysis
     write_components(components, headers, total_components)
     write_new_data(countries, transform, total_components)
     write_variance_ratio(pca.explained_variance_ratio_, total_components)
     write_correlation(correlation, headers)
 
+    # Plotting
     biplot(transform, countries, components, headers)
-
-    print('a')
 
 
 def read_data(file_name: str):
@@ -124,14 +128,12 @@ def biplot(data, countries, components, names):
     plt.scatter(x, y)
     for i, country in enumerate(countries):
         plt.annotate(country, (x[i], y[i]), size=7, color='b')
-    print(components)
     scl = 5
     for i, name in enumerate(names):
         if i == 0:
             continue
         x_coord = components[i - 1][0]  # PC0
         y_coord = components[i - 1][1]  # PC1
-        print(f'{x_coord=}, {y_coord=}')
         plt.arrow(0, 0, x_coord * scl, y_coord * scl, color='r', alpha=0.5)
         plt.text(x_coord * scl * 1.1, y_coord * scl * 1.1, name, color='r', size=7)
 
