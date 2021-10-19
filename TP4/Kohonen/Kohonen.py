@@ -2,8 +2,9 @@ import random
 import json
 import statistics
 import math
-import matplotlib.colors as colors
-import matplotlib.pyplot as plt
+
+from Graph import Graph
+
 
 class Kohonen:
     data = [] # [0: todos los valores de una variable, 1: todos los valores de otra variable...]
@@ -65,29 +66,8 @@ class Kohonen:
         sorted_by_keys = dict(sorted(dict_keys))
         print(sorted_by_keys)
 
-        all_points = []
-        for x in range(Kohonen.output_grid_size):
-            for y in range(Kohonen.output_grid_size):
-                all_points.append((x, y))
-        activated_neurons = list(set(best_neurons));
-        activated_neurons.sort()
-
-        amounts = []
-        for activated_neuron in activated_neurons:
-            amounts.append(60 * len(grouped_result[activated_neuron]))
-
-        fig, ax = plt.subplots()
-        ax.scatter(*zip(*all_points), label='Neuronas no activadas')
-        ax.scatter(*zip(*activated_neurons), s=amounts, label='Neuronas activadas y su cantidad')
-        ax.set_title('Activación de neuronas')
-        ax.set_xlabel('Coordenada x - Neuronas')
-        ax.set_ylabel('Coordenada y - Neuronas')
-
-        plt.xlim(-1, Kohonen.output_grid_size)
-        plt.ylim(-1, Kohonen.output_grid_size)
-        plt.legend(fontsize = 8, markerscale = 0.5)
-        plt.show()
-
+        Graph.graph_activated_neurons(grouped_result, best_neurons, Kohonen.output_grid_size)
+        Graph.graph_average_distance(Kohonen.output_grid_size, Kohonen.output_grid)
 
     @staticmethod
     def normalize_data(data):
