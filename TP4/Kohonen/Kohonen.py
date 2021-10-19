@@ -2,6 +2,8 @@ import random
 import json
 import statistics
 import math
+import matplotlib.colors as colors
+import matplotlib.pyplot as plt
 
 class Kohonen:
     data = [] # [0: todos los valores de una variable, 1: todos los valores de otra variable...]
@@ -29,7 +31,6 @@ class Kohonen:
     @staticmethod
     def train():
         indexes = list(range(len(Kohonen.country_names)))
-        print(Kohonen.output_grid)
         for e in range(Kohonen.epochs):
             random.shuffle(indexes)
             for idx in indexes:
@@ -39,25 +40,54 @@ class Kohonen:
                 best_neuron = Kohonen.search_best_neuron(idx_values)
                 neighbours = Kohonen.find_neighbours(best_neuron)
                 Kohonen.update_weights(neighbours, idx_values)
-        print(Kohonen.output_grid)
 
     @staticmethod
     def test():
         grouped_result = {}
+        best_neurons = []
         for idx in range(len(Kohonen.country_names)):
             idx_values = []
             for row in Kohonen.normalized_data:
                 idx_values.append(row[idx])
             best_neuron = Kohonen.search_best_neuron(idx_values)
+            best_neurons.append(best_neuron)
             if best_neuron in grouped_result:
                 grouped_result[best_neuron].append(Kohonen.country_names[idx])
             else:
                 grouped_result[best_neuron] = [Kohonen.country_names[idx]]
 
+        Kohonen.handle_results(grouped_result, best_neurons)
+
+    @staticmethod
+    def handle_results(grouped_result, best_neurons):
         print('Países agrupados por neurona')
         dict_keys = grouped_result.items()
         sorted_by_keys = dict(sorted(dict_keys))
         print(sorted_by_keys)
+
+        all_points = []
+        for x in range(Kohonen.output_grid_size):
+            for y in range(Kohonen.output_grid_size):
+                all_points.append((x, y))
+        activated_neurons = list(set(best_neurons));
+        activated_neurons.sort()
+
+        amounts = []
+        for activated_neuron in activated_neurons:
+            amounts.append(60 * len(grouped_result[activated_neuron]))
+
+        fig, ax = plt.subplots()
+        ax.scatter(*zip(*all_points), label='Neuronas no activadas')
+        ax.scatter(*zip(*activated_neurons), s=amounts, label='Neuronas activadas y su cantidad')
+        ax.set_title('Activación de neuronas')
+        ax.set_xlabel('Coordenada x - Neuronas')
+        ax.set_ylabel('Coordenada y - Neuronas')
+
+        plt.xlim(-1, Kohonen.output_grid_size)
+        plt.ylim(-1, Kohonen.output_grid_size)
+        plt.legend(fontsize = 8, markerscale = 0.5)
+        plt.show()
+
 
     @staticmethod
     def normalize_data(data):
