@@ -8,7 +8,7 @@ class Kohonen:
     normalized_data = [] # [0: todos los valores de una variable, 1: todos los valores de otra variable...]
     learning_rate = 0.5
     radius = 1
-    output_grid_size = 4
+    output_grid_size = 5
     output_grid = None
     input_size = None
     keys = [] # Orden de los arrays dentro de data y normalized_data
@@ -29,6 +29,7 @@ class Kohonen:
     @staticmethod
     def train():
         indexes = list(range(len(Kohonen.country_names)))
+        print(Kohonen.output_grid)
         for e in range(Kohonen.epochs):
             random.shuffle(indexes)
             for idx in indexes:
@@ -38,7 +39,7 @@ class Kohonen:
                 best_neuron = Kohonen.search_best_neuron(idx_values)
                 neighbours = Kohonen.find_neighbours(best_neuron)
                 Kohonen.update_weights(neighbours, idx_values)
-            print(e)
+        print(Kohonen.output_grid)
 
     @staticmethod
     def test():
@@ -85,9 +86,9 @@ class Kohonen:
 
     @staticmethod
     def initialize_output_grid():
-        grid = [[None] * Kohonen.output_grid_size] * Kohonen.output_grid_size
+        grid = [None] * Kohonen.output_grid_size
         for idx in range(Kohonen.output_grid_size):
-            # grid[idx] = []
+            grid[idx] = [None] * Kohonen.output_grid_size
             for idy in range(Kohonen.output_grid_size):
                 random_index = random.randrange(0, len(Kohonen.normalized_data[0]))
                 grid[idx][idy] = []
@@ -141,7 +142,7 @@ class Kohonen:
             idx = neighbor[0]
             idy = neighbor[1]
             current_value = Kohonen.output_grid[idx][idy]
-            delta = []
+            new_weight = []
             for index in range(len(idx_values)):
-                delta.append((idx_values[index] - current_value[index]) * Kohonen.learning_rate)
-            Kohonen.output_grid[idx][idy] = current_value + delta
+                new_weight.append(current_value[index] + (idx_values[index] - current_value[index]) * Kohonen.learning_rate)
+            Kohonen.output_grid[idx][idy] = new_weight
