@@ -1,0 +1,284 @@
+{
+  "data": [
+    {
+      "Country": "Austria",
+      "Area": "83871",
+      "GDP": "41600",
+      "Inflation": "3.5",
+      "Life.expect": "79.91",
+      "Military": "0.8",
+      "Pop.growth": "0.03",
+      "Unemployment": "4.2"
+    },
+    {
+      "Country": "Belgium",
+      "Area": "30528",
+      "GDP": "37800",
+      "Inflation": "3.5",
+      "Life.expect": "79.65",
+      "Military": "1.3",
+      "Pop.growth": "0.06",
+      "Unemployment": "7.2"
+    },
+    {
+      "Country": "Bulgaria",
+      "Area": "110879",
+      "GDP": "13800",
+      "Inflation": "4.2",
+      "Life.expect": "73.84",
+      "Military": "2.6",
+      "Pop.growth": "-0.8",
+      "Unemployment": "9.6"
+    },
+    {
+      "Country": "Croatia",
+      "Area": "56594",
+      "GDP": "18000",
+      "Inflation": "2.3",
+      "Life.expect": "75.99",
+      "Military": "2.39",
+      "Pop.growth": "-0.09",
+      "Unemployment": "17.7"
+    },
+    {
+      "Country": "Czech Republic",
+      "Area": "78867",
+      "GDP": "27100",
+      "Inflation": "1.9",
+      "Life.expect": "77.38",
+      "Military": "1.15",
+      "Pop.growth": "-0.13",
+      "Unemployment": "8.5"
+    },
+    {
+      "Country": "Denmark",
+      "Area": "43094",
+      "GDP": "37000",
+      "Inflation": "2.8",
+      "Life.expect": "78.78",
+      "Military": "1.3",
+      "Pop.growth": "0.24",
+      "Unemployment": "6.1"
+    },
+    {
+     "Country": "Estonia",
+      "Area": "45228",
+      "GDP": "20400",
+      "Inflation": "5",
+      "Life.expect": "73.58",
+      "Military": "2",
+      "Pop.growth": "-0.65",
+      "Unemployment": "12.5"
+    },
+    {
+      "Country": "Finland",
+      "Area": "338145",
+      "GDP": "36000",
+      "Inflation": "3.3",
+      "Life.expect": "79.41",
+      "Military": "2",
+      "Pop.growth": "0.07",
+      "Unemployment": "7.8"
+    },
+    {
+      "Country": "Germany",
+      "Area": "357022",
+      "GDP": "38100",
+      "Inflation": "2.5",
+      "Life.expect": "80.19",
+      "Military": "1.5",
+      "Pop.growth": "-0.2",
+      "Unemployment": "6"
+    },
+    {
+      "Country": "Greece",
+      "Area": "131957",
+      "GDP": "26300",
+      "Inflation": "3.3",
+      "Life.expect": "80.05",
+      "Military": "4.3",
+      "Pop.growth": "0.06",
+      "Unemployment": "17.4"
+    },
+    {
+      "Country": "Hungary",
+      "Area": "93028",
+      "GDP": "19600",
+      "Inflation": "3.9",
+      "Life.expect": "75.02",
+      "Military": "1.75",
+      "Pop.growth": "-0.18",
+      "Unemployment": "10.9"
+    },
+    {
+      "Country": "Iceland",
+      "Area": "103000",
+      "GDP": "38100",
+      "Inflation": "4",
+      "Life.expect": "81",
+      "Military": "0",
+      "Pop.growth": "0.67",
+      "Unemployment": "7.4"
+    },
+    {
+      "Country": "Ireland",
+      "Area": "70273",
+      "GDP": "40800",
+      "Inflation": "2.6",
+      "Life.expect": "80.32",
+      "Military": "0.9",
+      "Pop.growth": "1.11",
+      "Unemployment": "14.4"
+    },
+    {
+      "Country": "Italy",
+      "Area": "301340",
+      "GDP": "30500",
+      "Inflation": "2.9",
+      "Life.expect": "81.86",
+      "Military": "1.8",
+      "Pop.growth": "0.38",
+      "Unemployment": "8.4"
+    },
+    {
+      "Country": "Latvia",
+      "Area": "64589",
+      "GDP": "16800",
+      "Inflation": "4.4",
+      "Life.expect": "72.93",
+      "Military": "1.1",
+      "Pop.growth": "-0.6",
+      "Unemployment": "12.8"
+    },
+    {
+      "Country": "Lithuania",
+      "Area": "65300",
+      "GDP": "19100",
+      "Inflation": "4.1",
+      "Life.expect": "75.55",
+      "Military": "0.9",
+      "Pop.growth": "-0.28",
+      "Unemployment": "15.4"
+    },
+    {
+      "Country": "Luxembourg",
+      "Area": "2586",
+      "GDP": "80600",
+      "Inflation": "3.4",
+      "Life.expect": "79.75",
+      "Military": "0.9",
+      "Pop.growth": "1.14",
+      "Unemployment": "5.7"
+    },
+    {
+      "Country": "Netherlands",
+      "Area": "41543",
+      "GDP": "42000",
+      "Inflation": "2.3",
+      "Life.expect": "80.91",
+      "Military": "1.6",
+      "Pop.growth": "0.45",
+      "Unemployment": "4.4"
+    },
+    {
+      "Country": "Norway",
+      "Area": "323802",
+      "GDP": "53400",
+      "Inflation": "1.3",
+      "Life.expect": "80.32",
+      "Military": "1.9",
+      "Pop.growth": "0.33",
+      "Unemployment": "3.3"
+    },
+    {
+      "Country": "Poland",
+      "Area": "312685",
+      "GDP": "20200",
+      "Inflation": "4.2",
+      "Life.expect": "76.25",
+      "Military": "1.9",
+      "Pop.growth": "-0.08",
+      "Unemployment": "12.4"
+    },
+    {
+      "Country": "Portugal",
+      "Area": "92090",
+      "GDP": "23400",
+      "Inflation": "3.7",
+      "Life.expect": "78.7",
+      "Military": "2.3",
+      "Pop.growth": "0.18",
+      "Unemployment": "12.7"
+    },
+    {
+      "Country": "Slovakia",
+      "Area": "49035",
+      "GDP": "23300",
+      "Inflation": "3.9",
+      "Life.expect": "76.03",
+      "Military": "1.08",
+      "Pop.growth": "0.1",
+      "Unemployment": "13.2"
+    },
+    {
+      "Country": "Slovenia",
+      "Area": "20273",
+      "GDP": "28800",
+      "Inflation": "1.8",
+      "Life.expect": "77.48",
+      "Military": "1.7",
+      "Pop.growth": "-0.19",
+      "Unemployment": "11.8"
+    },
+    {
+      "Country": "Spain",
+      "Area": "505370",
+      "GDP": "30500",
+      "Inflation": "3.1",
+      "Life.expect": "81.27",
+      "Military": "1.2",
+      "Pop.growth": "0.65",
+      "Unemployment": "21.7"
+    },
+    {
+      "Country": "Sweden",
+      "Area": "450295",
+      "GDP": "40700",
+      "Inflation": "3",
+      "Life.expect": "81.18",
+      "Military": "1.5",
+      "Pop.growth": "0.17",
+      "Unemployment": "7.5"
+    },
+    {
+      "Country": "Switzerland",
+      "Area": "41277",
+      "GDP": "44500",
+      "Inflation": "0.2",
+      "Life.expect": "81.17",
+      "Military": "1",
+      "Pop.growth": "0.92",
+      "Unemployment": "2.8"
+    },
+    {
+      "Country": "Ukraine",
+      "Area": "603550",
+      "GDP": "7200",
+      "Inflation": "8",
+      "Life.expect": "68.74",
+      "Military": "1.4",
+      "Pop.growth": "-0.63",
+      "Unemployment": "7.9"
+    },
+    {
+      "Country": "United Kingdom",
+      "Area": "243610",
+      "GDP": "36500",
+      "Inflation": "4.5",
+      "Life.expect": "80.17",
+      "Military": "2.7",
+      "Pop.growth": "0.55",
+      "Unemployment": "8.1"
+    }
+  ]
+}
