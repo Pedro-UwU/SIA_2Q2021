@@ -8,7 +8,7 @@ class newKohonen:
 
     def __init__(self, learning_rate=0.5, radius=1, grid_size=20, input_size=None, data=None, data_headers=None, decreasing_factor=1):
         self.decreasing_factor = decreasing_factor
-        self.initial_lr= learning_rate
+        self.initial_lr = learning_rate
         self.learning_rate = learning_rate
         self.initial_radius = radius
         self.radius = radius
@@ -32,7 +32,6 @@ class newKohonen:
         repetitions = 500 * len(self.data[0])
         for rep in range(repetitions):
             all_data = self.data.copy()
-            random.shuffle(all_data)
             for selected_data in all_data:
                 winner_i, winner_j = self._search_winner(selected_data)
                 neighbors = self._get_neighbors(self.radius, winner_i, winner_j)

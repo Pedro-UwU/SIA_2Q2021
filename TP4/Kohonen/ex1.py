@@ -15,7 +15,7 @@ def main():
         names.append(line[0])
         data.append([float(x) for x in line[1:8]])
     data = np.array(data)
-    kohonen = newKohonen.newKohonen(input_size=6, data=data, data_headers=names, grid_size=4, radius=2)
+    kohonen = newKohonen.newKohonen(input_size=7, data=data, data_headers=names, grid_size=4, radius=2)
     kohonen.train()
     results = kohonen.test()
     locations = {}
