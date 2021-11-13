@@ -1,5 +1,8 @@
+import os
 def get_numbers():
-    file = open('ej3/numeros.txt', 'r')
+    dirname = os.path.dirname(__file__)
+    number_file = os.path.join(dirname, './numeros.txt')
+    file = open(number_file, 'r')
     lines = file.readlines()
     file.close()
     numbers = []

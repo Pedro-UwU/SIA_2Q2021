@@ -119,7 +119,7 @@ def ej3_3():
         plt.ylabel('Number of Neural Networks')
 
     plt.title('EJ 3-3')
-    plt.legend()
+    # plt.legend()
     plt.show()
 
 

@@ -2,7 +2,7 @@ import numpy as np
 import json
 
 
-class NeuralNetwork:
+class MultilayerPerceptron:
     def __init__(self, layers: int, nodes_per_layer: list[int], activation_function, activation_derivative,
                  learning_rate, init_random=True):
         self.layers = layers
@@ -21,7 +21,7 @@ class NeuralNetwork:
 
     def query(self, input_array: list[float]):
         inp = np.array(input_array)[np.newaxis].T
-        inp = NeuralNetwork._add_bias(inp)
+        inp = MultilayerPerceptron._add_bias(inp)
         h = [inp]
         values = [inp]
         self._compute_query(h, values)
@@ -29,7 +29,7 @@ class NeuralNetwork:
 
     def train(self, input_array: list[float], target_output: list[float], previous_delta_w=None, new_delta_w=None, alpha=None, dynamic_lr=False, a=0, b=0):
         inp = np.array(input_array)[np.newaxis].T
-        inp = NeuralNetwork._add_bias(inp)
+        inp = MultilayerPerceptron._add_bias(inp)
         trg = np.array(target_output)[np.newaxis].T
         h = [inp]
         values = [inp]
@@ -40,11 +40,13 @@ class NeuralNetwork:
         d = self.derivative(h[-1]) * error
         delta[self.layers - 1] = d
 
-        for i in range(self.layers - 2, 0, -1):  # desde el ultimo al primero
+        for i in range(self.layers - 2, -1, -1):  # desde el ultimo al primero
             d = delta[i + 1]
             h_ = h[i]
             aux_weight = np.delete(self.weights[i].T, self.nodes_per_layer[i],
                                    axis=0)  # Le saco la ultima fila de W para no calcular el delta del bias
+            if i == 0:
+                h_ = np.delete(h_, self.nodes_per_layer[i], axis=0)
             tmp1 = np.dot(aux_weight, d)
             tmp2 = self.derivative(h_)
             delta[i] = tmp1 * tmp2
@@ -66,7 +68,7 @@ class NeuralNetwork:
                 new_delta_w[i] = delta_w[i]
 
         self._last_error = error_value
-        return error_value
+        return error_value, delta
 
     @staticmethod
     def _add_bias(array):
@@ -77,7 +79,7 @@ class NeuralNetwork:
             x = np.dot(self.weights[i], values[i])
             h.append(np.copy(x))
             x = self.activation(x)
-            x = NeuralNetwork._add_bias(x)
+            x = MultilayerPerceptron._add_bias(x)
             values.append(np.copy(x))
 
         values[-1] = np.delete(values[-1], self.nodes_per_layer[-1], axis=0)
@@ -103,7 +105,7 @@ class NeuralNetwork:
     def loadNN(cls, file_name, activation_function, derivative_activation):
         with open(file_name, 'r') as file:
             decoded = json.loads(file.read())
-            aux = NeuralNetwork(decoded['total_layers'], decoded['nodes_per_layer'], activation_function,
+            aux = MultilayerPerceptron(decoded['total_layers'], decoded['nodes_per_layer'], activation_function,
                                 derivative_activation, decoded['learning_rate'], init_random=False)
             for i in range(decoded['total_layers'] - 1):
                 w = np.array(decoded['weights'][i]).reshape((aux.nodes_per_layer[i + 1], aux.nodes_per_layer[i] + 1))
@@ -116,7 +118,7 @@ class NeuralNetwork:
 
     @staticmethod
     def sigmoid_der(x):
-        return NeuralNetwork.sigmoid(x) * (1 - NeuralNetwork.sigmoid(x))
+        return MultilayerPerceptron.sigmoid(x) * (1 - MultilayerPerceptron.sigmoid(x))
 
     @staticmethod
     def tanh(x):
@@ -134,10 +136,12 @@ class NeuralNetwork:
     def sign_der(x):
         return 0
 
-    @staticmethod
-    def linear(x):
-        return x
 
-    @staticmethod
-    def linear_der(x: np.ndarray):
-        return np.ones(x.shape)
+    # chequear
+    # @staticmethod
+    # def linear(x):
+    #     return x;
+    #
+    # @staticmethod
+    # def linear_der(x):
+    #     return 1;
