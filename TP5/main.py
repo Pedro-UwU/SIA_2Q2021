@@ -21,7 +21,7 @@ def main():
     #         random.shuffle(lines)
     #         for line in lines:
     #             data = [float(x) for x in line[:-1]]
-    #             error = ae.train(data, last_delta=last_delta, new_delta=new_delta, alpha=0.8)
+    #             error = ae.train(data, data, last_delta=last_delta, new_delta=new_delta, alpha=0.8)
     #             # print(f'{error=}')
     ae = Autoencoder.load_autoencoder('test5.json', MultilayerPerceptron.sigmoid, MultilayerPerceptron.sigmoid_der)
     result = ae.queryZ([0.9111892496842396, 0.5221588378941739])

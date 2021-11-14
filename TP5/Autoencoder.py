@@ -1,7 +1,5 @@
 import json
 
-import numpy as np
-
 from MultilayerPerceptron import MultilayerPerceptron
 
 
@@ -22,8 +20,8 @@ class Autoencoder:
         result, z = self.multilayer_perceptron.query_with_layer_value(input_data, layer=self.latent_index)
         return result, z
 
-    def train(self, input_data, last_delta=None, new_delta=None, alpha=None):
-        error = self.multilayer_perceptron.train(input_data, input_data, previous_delta_w=last_delta, new_delta_w=new_delta, alpha=alpha)
+    def train(self, input_data, target_data, last_delta=None, new_delta=None, alpha=None, dynamic_lr=False, a=None, b=None):
+        error = self.multilayer_perceptron.train(input_data, target_data, previous_delta_w=last_delta, new_delta_w=new_delta, alpha=alpha, dynamic_lr=dynamic_lr, a=a, b=b)
         return error
 
     def queryZ(self, input_Z):
