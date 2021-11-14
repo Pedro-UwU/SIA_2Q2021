@@ -16,7 +16,7 @@ class MultilayerPerceptron:
         if init_random:
             for i in range(layers - 1):
                 w = (np.random.rand(self.nodes_per_layer[i + 1],
-                                    self.nodes_per_layer[i] + 1) - 0.5) * 2  # El +1 es para el bias node
+                                    self.nodes_per_layer[i] + 1) - 0.5) * 2 # El +1 es para el bias node
                 self.weights.append(w)
 
     def query(self, input_array: list[float]):
@@ -26,6 +26,14 @@ class MultilayerPerceptron:
         values = [inp]
         self._compute_query(h, values)
         return values[-1].tolist()
+
+    def query_with_layer_value(self, input_array: list[float], layer: int):
+        inp = np.array(input_array)[np.newaxis].T
+        inp = MultilayerPerceptron._add_bias(inp)
+        h = [inp]
+        values = [inp]
+        self._compute_query(h, values)
+        return values[-1].tolist(), values[layer].tolist()[:-1]
 
     def train(self, input_array: list[float], target_output: list[float], previous_delta_w=None, new_delta_w=None, alpha=None, dynamic_lr=False, a=0, b=0):
         inp = np.array(input_array)[np.newaxis].T
@@ -40,13 +48,11 @@ class MultilayerPerceptron:
         d = self.derivative(h[-1]) * error
         delta[self.layers - 1] = d
 
-        for i in range(self.layers - 2, -1, -1):  # desde el ultimo al primero
+        for i in range(self.layers - 2, 0, -1):  # desde el ultimo al primero
             d = delta[i + 1]
             h_ = h[i]
             aux_weight = np.delete(self.weights[i].T, self.nodes_per_layer[i],
                                    axis=0)  # Le saco la ultima fila de W para no calcular el delta del bias
-            if i == 0:
-                h_ = np.delete(h_, self.nodes_per_layer[i], axis=0)
             tmp1 = np.dot(aux_weight, d)
             tmp2 = self.derivative(h_)
             delta[i] = tmp1 * tmp2
@@ -68,7 +74,7 @@ class MultilayerPerceptron:
                 new_delta_w[i] = delta_w[i]
 
         self._last_error = error_value
-        return error_value, delta
+        return error_value
 
     @staticmethod
     def _add_bias(array):
@@ -76,7 +82,7 @@ class MultilayerPerceptron:
 
     def _compute_query(self, h, values):
         for i in range(self.layers - 1):
-            x = np.dot(self.weights[i], values[i])
+            x = np.matmul(self.weights[i], values[i])
             h.append(np.copy(x))
             x = self.activation(x)
             x = MultilayerPerceptron._add_bias(x)
@@ -136,12 +142,10 @@ class MultilayerPerceptron:
     def sign_der(x):
         return 0
 
+    @staticmethod
+    def linear(x):
+        return x
 
-    # chequear
-    # @staticmethod
-    # def linear(x):
-    #     return x;
-    #
-    # @staticmethod
-    # def linear_der(x):
-    #     return 1;
+    @staticmethod
+    def linear_der(x: np.ndarray):
+        return np.ones(x.shape)
