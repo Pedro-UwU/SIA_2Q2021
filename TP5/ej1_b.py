@@ -11,8 +11,8 @@ from MultilayerPerceptron import MultilayerPerceptron
 def ej1_b():
     structure = [35, 20, 5]
     noise_prob = 0.5
-    noise_range = 1
-    epochs = 10000
+    noise_range = 0.8
+    epochs = 5000
 
     file = open('data/group2_format.csv')
     reader = csv.reader(file)
@@ -24,6 +24,7 @@ def ej1_b():
     print(error[-1])
     test_data = add_noise(data, noise_prob, noise_range)
     graph_digits(ae, data, test_data)
+    ae.multilayer_perceptron.save_network('denoiser_np50_nr8.json')
 
 
 def graph_digits(ae, data, corrupted_data):
