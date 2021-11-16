@@ -20,7 +20,7 @@ class Autoencoder:
         result, z = self.multilayer_perceptron.query_with_layer_value(input_data, layer=self.latent_index)
         return result, z
 
-    def train(self, input_data, target_data, last_delta=None, new_delta=None, alpha=None, dynamic_lr=False, a=None, b=None):
+    def train(self, input_data, target_data, last_delta=None, new_delta=None, alpha=None, dynamic_lr=True, a=None, b=None):
         error = self.multilayer_perceptron.train(input_data, target_data, previous_delta_w=last_delta, new_delta_w=new_delta, alpha=alpha, dynamic_lr=dynamic_lr, a=a, b=b)
         return error
 
@@ -45,6 +45,7 @@ class Autoencoder:
         return ae
 
 if __name__ == '__main__':
+    print('entra aca')
     ae = Autoencoder([2,2], MultilayerPerceptron.linear, MultilayerPerceptron.linear_der, 0.1)
     for i in range(100):
         error = ae.train([0.1, 0.2])

@@ -35,7 +35,7 @@ class MultilayerPerceptron:
         self._compute_query(h, values)
         return values[-1].tolist(), values[layer].tolist()[:-1]
 
-    def train(self, input_array: list[float], target_output: list[float], previous_delta_w=None, new_delta_w=None, alpha=None, dynamic_lr=False, a=0, b=0):
+    def train(self, input_array: list[float], target_output: list[float], previous_delta_w=None, new_delta_w=None, alpha=None, dynamic_lr=False, a=0.01, b=0.02):
         inp = np.array(input_array)[np.newaxis].T
         inp = MultilayerPerceptron._add_bias(inp)
         trg = np.array(target_output)[np.newaxis].T
