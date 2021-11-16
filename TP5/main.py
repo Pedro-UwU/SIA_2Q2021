@@ -26,7 +26,7 @@ def main():
     # ae = Autoencoder.load_autoencoder('test5.json', MultilayerPerceptron.sigmoid, MultilayerPerceptron.sigmoid_der)
     # result = ae.queryZ([0.9111892496842396, 0.5221588378941739])
     #
-    ae = Autoencoder.load_autoencoder('test5.json', MultilayerPerceptron.sigmoid, MultilayerPerceptron.sigmoid_der)
+    ae = Autoencoder.load_autoencoder('jsons/test5.json', MultilayerPerceptron.sigmoid, MultilayerPerceptron.sigmoid_der)
     with open('data/group1_format.csv') as file:
         reader = csv.reader(file)
         for line in reader:
